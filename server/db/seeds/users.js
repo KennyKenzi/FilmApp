@@ -22,7 +22,7 @@ exports.seed = function(knex) {
           lastName: 'King', 
           username: 'd_king', 
           password: 'password', 
-          createdAt: moment().format('DD/MM/YYYY HH:mm:ss')
+          createdAt: moment().format('YYYY-MM-DD HH:mm:ss')
         },
         {
           id: 3, 
@@ -30,7 +30,7 @@ exports.seed = function(knex) {
           lastName: 'Tribianni', 
           username: 'j_tribiani', 
           password: 'password', 
-          createdAt: moment().format('DD/MM/YYYY HH:mm:ss')
+          createdAt: moment().format('YYYY-MM-DD HH:mm:ss')
         },
       ]);
     });

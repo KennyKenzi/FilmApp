@@ -12,6 +12,7 @@ exports.up = function(knex) {
         table.string('Country').notNullable();
         table.string('genre').notNullable();
         table.string('image').notNullable();
+        table.specificType('comments', 'text []')
         
     });
 
