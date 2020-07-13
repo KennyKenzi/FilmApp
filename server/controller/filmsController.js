@@ -23,7 +23,7 @@ exports.addFilms=async(req, res, next)=>{
             console.log('2==',err)
             return res.status(500).json(err)
         }
-       // console.log('3===', req.file)
+        console.log('3===', req.file)
 
         var postBody = { 
           name: req.body.name,
