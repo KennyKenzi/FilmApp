@@ -48,7 +48,7 @@ function normalizePort(val) {
 
   return false;
 }
-
+console.log(port)
 /**
  * Event listener for HTTP server "error" event.
  */
