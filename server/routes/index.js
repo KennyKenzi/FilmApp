@@ -14,7 +14,7 @@ router.get('/films', getFilms.getFilms);
 router.post('/films', getFilms.addFilms);
 
 router.get('/comments', getComments.getComments);
-router.post('/comments', auth ,getComments.addComments);
+router.post('/comments', auth.auth ,getComments.addComments);
 
 
 router.get('/film', getFilms.viewAFilm)

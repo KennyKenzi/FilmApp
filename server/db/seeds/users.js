@@ -3,7 +3,6 @@ var moment = require ('moment')
 
 exports.seed = function(knex) {
   // Deletes ALL existing entries
-  
   return knex('users').del()
     .then(function () {
       // Inserts seed entries
@@ -13,7 +12,7 @@ exports.seed = function(knex) {
           firstName: 'Basil', 
           lastName: 'Dingall', 
           username: 'b_dingall', 
-          password: 'password', 
+          password: '$2b$10$bm4.E4pmhCxfm2/6OtYL5egNbqr6ErwMuLrk/P0.G0chVPIstV/MG', 
           createdAt: moment().format('YYYY-MM-DD HH:mm:ss')
         },
         {
@@ -21,7 +20,7 @@ exports.seed = function(knex) {
           firstName: 'Danielle', 
           lastName: 'King', 
           username: 'd_king', 
-          password: 'password', 
+          password: '$2b$10$bm4.E4pmhCxfm2/6OtYL5egNbqr6ErwMuLrk/P0.G0chVPIstV/MG', 
           createdAt: moment().format('YYYY-MM-DD HH:mm:ss')
         },
         {
@@ -29,7 +28,7 @@ exports.seed = function(knex) {
           firstName: 'Joey', 
           lastName: 'Tribianni', 
           username: 'j_tribiani', 
-          password: 'password', 
+          password: '$2b$10$bm4.E4pmhCxfm2/6OtYL5egNbqr6ErwMuLrk/P0.G0chVPIstV/MG',
           createdAt: moment().format('YYYY-MM-DD HH:mm:ss')
         },
       ]);

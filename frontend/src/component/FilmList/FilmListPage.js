@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import FilmSection from './EachFIlmSection'
+import Navbar from '../Navbar'
+
 
 
 
@@ -12,14 +14,21 @@ class FilmListPage extends Component {
 
 
     render() { 
+       
+
         return ( 
             <div>
+
             <h1>
                 Film List
             </h1>
-            {this.state.testArray.forEach(element => {
-                return<div><FilmSection/></div>
-            })}
+            <p>
+                test
+                {this.state.testArray.map(element => {
+                        return<div><FilmSection/></div>
+                    })}
+            </p>
+
             </div>
 
          );

@@ -4,8 +4,10 @@ const { knex } = require('../db/knex');
 const jwt = require('jsonwebtoken')
 
 
-exports.register =(req, res,next)=>{
 
+exports.register =(req, res,next)=>{
+console.log(req.body)
+    
         bcrypt.hash(req.body.password, 10).then(
           async(hash) => {
             const user = {
@@ -40,7 +42,8 @@ exports.register =(req, res,next)=>{
       
 
 exports.login =async(req, res,next)=>{
-    console.log(req.body)
+      
+    console.log( req.body)
 
         try {
                 await knex.select('*').from('users').where({'username':req.body.username})
@@ -57,11 +60,13 @@ exports.login =async(req, res,next)=>{
                             bcrypt.compare(req.body.password, newUser.password).then(
                                 (valid) => {
                                     if (!valid) {
+                                        
                                         return res.status(401).json({
                                             error: new Error('Incorrect password!'),
                                             message: 'No user/password'
                                         });
                                     }
+                                   
                                     const token = jwt.sign(
                                         { userId: newUser.id },
                                         'RANDOM_SELECTED_TOKEN_SECRET',
