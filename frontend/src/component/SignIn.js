@@ -27,7 +27,7 @@ class SignIn extends Component {
             <div>
      
                 <form className="theborderish" onSubmit={this.onSubmit}>
-                <div className="container" style={{width: "50%"}}>
+                <div className="container" style={{width: "50%", fontSize: "70%"}}>
                     <h1>Sign In</h1>
                     <p>Please Log in.</p>
                     <hr/>
