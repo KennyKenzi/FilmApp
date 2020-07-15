@@ -46,3 +46,15 @@ exports.addFilms=async(req, res, next)=>{
       })
 
 }
+
+exports.viewAFilm=async(req, res, next)=>{
+
+    console.log(req.query)
+    var id= req.query.id
+    await knex.select('*').from('films').where({'id': id})
+    .then((film)=>{
+        console.log(film)
+        res.send(film).status(200)
+    })
+
+}
