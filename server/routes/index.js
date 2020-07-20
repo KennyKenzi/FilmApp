@@ -10,13 +10,13 @@ router.post('/', function(req, res, next) {
  // res.render('index', { title: 'Express' });
 
 });
-router.get('/films', auth.auth, getFilms.getFilms);
-router.post('/films', getFilms.addFilms);
+router.get('/api/films', auth.auth, getFilms.getFilms);
+router.post('/api/films', getFilms.addFilms);
 
-router.get('/comments', getComments.getComments);
-router.post('/comments', auth.auth ,getComments.addComments);
+router.get('/api/comments', getComments.getComments);
+router.post('/api/comments', auth.auth ,getComments.addComments);
 
 
-router.get('/film', getFilms.viewAFilm)
+router.get('/api/film', getFilms.viewAFilm)
 
 module.exports = router;

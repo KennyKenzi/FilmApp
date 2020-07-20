@@ -10,17 +10,17 @@ exports.auth = (req, res, next) => {
         const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
         const userId = decodedToken.userId;
 
-        console.log(userId)
-        console.log(req.body)
           if (req.body.length>1){
             if (req.body.userId && req.body.userId !== userId) {
               throw 'Invalid user ID';
             } else {
               return "It is a user"
-              next();
               }
           } else{
+            // return "It is a user"
+            req.user = userId
             next()
+            
           }
           
       }catch {
@@ -30,8 +30,9 @@ exports.auth = (req, res, next) => {
           
   }
   }else{
-    console.log('here')
-    //next()
+
+    console.log('not a user')
+    next()
   }
   
 

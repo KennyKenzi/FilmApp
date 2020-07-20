@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import apiCalls from '../config/api'
 import accessToken from '../config/accessToken'
-
+import {UserProvider} from '../Context/UserContext'
 
 class SignIn extends Component {
     state = { 
@@ -9,6 +9,13 @@ class SignIn extends Component {
         username: '',
         password: ''
      }
+
+
+     componentDidMount=()=>{
+         console.log(accessToken.getToken())
+         apiCalls.getUser(accessToken.getToken())
+     }
+
 
      onChange=(e)=>{
         if(e.target.value){
@@ -26,11 +33,10 @@ class SignIn extends Component {
 
                 await apiCalls.login(payLoad)
                 .then((res)=>{
-
-                        accessToken.setToken(res.data.token)
-                        console.log(document.cookie)
-                        this.props.history.push(`/films`);
-                    }, 
+                    this.setState({data: res.data})
+                    accessToken.setToken(res.data.token)
+                    this.props.history.push(`/films`);
+                }, 
                     (err)=>{
                         console.log(err.response)
                     } 
@@ -42,7 +48,7 @@ class SignIn extends Component {
 
     render() { 
         return ( 
-           
+           <UserProvider value= {this.state.data}>
             <div>
      
                 <form className="theborderish" onSubmit={this.onSubmit}>
@@ -67,6 +73,7 @@ class SignIn extends Component {
 
                 
             </div>
+            </UserProvider>
             
          )
     }

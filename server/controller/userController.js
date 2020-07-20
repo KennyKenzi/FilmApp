@@ -4,6 +4,7 @@ const { knex } = require('../db/knex');
 const jwt = require('jsonwebtoken');
 const auth = require('./auth');
 const { connect } = require('../routes/users');
+require('dotenv').config()
 
 
 
@@ -65,12 +66,13 @@ exports.login =async(req, res,next)=>{
                             res.cookie(
                                 "jid", 
                                 auth.createRefreshToken(newUser),
-                                {httpOnly: true},
+                                { maxAge: 900000, httpOnly: false}
                             )
                             res.status(200).json({
                                 userId: newUser.id,
                                 token: auth.createAccessToken(newUser)
                             })
+                            next()
                     })
                 }catch (error) {
                     res.status(500).json({
@@ -98,8 +100,10 @@ exports.login =async(req, res,next)=>{
 }
 
 exports.refreshToken=async(req, res, next)=>{
+
     const refreshtoken = req.cookies.jid;
-    console.log('====',res.cookies)
+    console.log(refreshtoken)
+   
     if (!refreshtoken){
         return res.send({ok: false, accessToken: ''})
     }
@@ -110,12 +114,22 @@ exports.refreshToken=async(req, res, next)=>{
         console.log(err)
         return res.send({ok: false, accessToken: ''})
     }
-
-    const user = await knex.select('*').from('users').where({'id':payload.userId})
-        res.cookie('jid', auth.createRefreshToken(user), {httpOnly: true})
+        console.log(payload)
+        const user = await knex.select('*').from('users').where({'id':payload.userId})
+       res.cookie('jid', auth.createRefreshToken(user), {httpOnly: true})
     if(!user){
         return res.send({ok: false, accessToken: ""})
     }
     return res.send({ok: true, accessToken: auth.createAccessToken(user)})
     
+}
+
+exports.user=async(req, res, next)=>{
+
+console.log('from here',req.user)
+if(!req.user){ 
+    return res.status(200).send('No User')
+}
+const user = await knex.select('firstName', 'lastName').from('users').where({'id':req.user})
+return res.status(200).json(user)
 }

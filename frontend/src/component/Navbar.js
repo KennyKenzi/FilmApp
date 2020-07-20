@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import {UserConsumer} from '../Context/UserContext'
 
 
 
@@ -12,8 +12,12 @@ class Navbar extends Component {
         redirectLogout: null,
      }
 
+    //  static contextType = UserContext
+
      componentDidMount=()=>{
          this.hideElement()
+
+         console.log(this.props)
      }
            
      hideElement=()=>{
@@ -28,13 +32,6 @@ class Navbar extends Component {
     clickButton=(e)=>{
         // e.preventDefault()
 
-        //first clear the token
-
-        // if (this.state.user){
-        //    this.setState({redirectLogout: '/films'})
-        // }else {
-        //     this.setState({redirectLogout: '/signin'})
-        // }
     }
 
     render() {
@@ -52,7 +49,7 @@ class Navbar extends Component {
                 <div className="navbar ">
                     <ul className="nav navbar-nav">
                     <li className="nav-item">
-                        <a className="nav-link" href="/">Home <span className="sr-only">(current)</span></a>
+                        <a className="nav-link" href="/films">Home <span className="sr-only">(current)</span></a>
                     </li>
                     <li className="nav-item ">
                         <a className="nav-link" href="/signin" onClick={this.clickButton}>{this.state.button}</a>

@@ -7,20 +7,30 @@ import SignIn from './component/SignIn'
 import Register from './component/Register'
 import Navbar from './component/Navbar'
 import axios from 'axios'
-//import Cookies from 'js-cookie'
+import access from './config/accessToken'
+import { UserProvider } from './Context/UserContext'
+
 
 
 function App() {
 useEffect(()=>{
-  //console.log('hereeee')
-  axios.post('http://localhost:4000/refresh_token', {credentials: true})
-  .then((r)=>{
-    console.log(r)
+  console.log('hereeee')
+  axios.post('http://localhost:4000/api/refresh_token', {}, {withCredentials: true})
+  .then(async(res)=>{
+    var data = res.data
+    console.log(data)
+    await access.setToken(data.accessToken)
+    await console.log(access.getToken())
+    
   })
 })
+console.log(access.getToken())
+
 
   return (
+    
     <div className="App">
+      <UserProvider>
       <header className="App-header">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
@@ -29,7 +39,7 @@ useEffect(()=>{
 
       <div className="App-body">
 
-        <BrowserRouter>
+        <BrowserRouter >
           <div>
             <Switch>
               <Route path="/" component={Home} exact/> 
@@ -44,6 +54,7 @@ useEffect(()=>{
           </div> 
         </BrowserRouter>
         </div>
+        </UserProvider>
       </div>
   );
 }

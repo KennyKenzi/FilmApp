@@ -5,11 +5,13 @@ var user = require('../controller/userController')
 
 
 
-router.post('/login',  user.login);
+router.post('/api/login',  user.login);
 
-router.post('/register',auth.passwordMatchCheck ,user.register);
+router.post('/api/register',auth.passwordMatchCheck ,user.register);
 
-router.post('/refresh_token', user.refreshToken)
+router.get('/api/user',auth.auth ,user.user);
+
+router.post('/api/refresh_token', user.refreshToken)
 
 
 module.exports = router;

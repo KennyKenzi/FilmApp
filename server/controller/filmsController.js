@@ -3,6 +3,7 @@ const {upload, multer} = require('../db/multer')
 
 exports.getFilms=async(req, res, next)=>{
 
+   //console.log('from auth middleware',req.user)
     await knex.select('*').from('films')
     .then((films)=>{
        // console.log(films)
