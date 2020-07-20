@@ -5,11 +5,12 @@ exports.getFilms=async(req, res, next)=>{
 
     await knex.select('*').from('films')
     .then((films)=>{
-        console.log(films)
-        res.send(films).status(200)
+       // console.log(films)
+        res.status(200).json(films)
     })
 
 }
+
 
 exports.addFilms=async(req, res, next)=>{
 
@@ -37,7 +38,7 @@ exports.addFilms=async(req, res, next)=>{
         }
         try {
             const films = await knex.insert(postBody).into('films')
-            res.json(films).status(200) 
+            res.status(200).json(films) 
         } catch (error) {
             res.json(error).status(500) 
             console.log('4==',err)
@@ -46,6 +47,7 @@ exports.addFilms=async(req, res, next)=>{
       })
 
 }
+
 
 exports.viewAFilm=async(req, res, next)=>{
 

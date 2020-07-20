@@ -10,7 +10,7 @@ router.post('/', function(req, res, next) {
  // res.render('index', { title: 'Express' });
 
 });
-router.get('/films', getFilms.getFilms);
+router.get('/films', auth.auth, getFilms.getFilms);
 router.post('/films', getFilms.addFilms);
 
 router.get('/comments', getComments.getComments);

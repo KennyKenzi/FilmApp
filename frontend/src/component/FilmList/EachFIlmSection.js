@@ -8,7 +8,11 @@ class FilmSection extends Component {
 
     render() { 
         return ( 
-                <h1>Each Film is here</h1>
+            <div>
+                 <h1>Each Film is here</h1>
+                <p>{this.props.data.name}</p>
+
+            </div>
 
          );
     }

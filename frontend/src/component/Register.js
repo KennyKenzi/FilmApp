@@ -9,7 +9,9 @@ class Register extends Component {
         lastName: '',
         username: '',
         password: '',
-        password2: ''
+        password2: '',
+
+        loading: false
      }
 
     onChange=(e)=>{
@@ -18,20 +20,43 @@ class Register extends Component {
         }
      }
 
-    onSubmit=async(e)=>{
+    onSubmit=(e)=>{
         e.preventDefault()
-        console.log(this.state)
-        await apiCalls.register(this.state).then((data)=>{
-        console.log(data)
-            this.setState({
-                firstName: '',
-                lastName: '',
-                username: '',
-                password: '',
-                password2: ''
-            })
+        this.setState({loading: true}, async()=>{
+             await apiCalls.register(this.state).then(
+              
+                (response)=>{
+                    console.log(response)
+                    this.setState({
+                        firstName: '',
+                        lastName: '',
+                        username: '',
+                        password: '',
+                        password2: '',
+                        loading: false ,
+                        status: 'success'
+                    })
+              
+                },
+
+                (error)=>{
+                    console.log(error.response.data.message)
+                    this.setState({
+                        firstName: '',
+                        lastName: '',
+                        username: '',
+                        password: '',
+                        password2: '',
+                        loading: false ,
+                        status: 'failed'
+                    })
+                }
+        
+        )
         })
+       
     }
+
     onCancel=()=>{
         console.log('For now, just print cancel')
     }
@@ -40,12 +65,13 @@ class Register extends Component {
         return ( 
            
         <div>
-
+           
             <form onSubmit={this.onSubmit} className="theborderish">
                 <div className="container" style={{width: "50%", fontSize: "70%"}}>
                     <h1>Register</h1>
                     <p>Please fill in this form to create an account.</p>
                     <hr/>
+                    
                     <span style={{display: "flex"}}>
                     <label htmlFor="firstName" style={{alignSelf: "center", margin:"1%"}}><b>FirstName</b></label>
                     <input type="text" placeholder="Enter First Name" name="firstName" value={this.state.firstName} required onChange={this.onChange}/>
@@ -62,11 +88,15 @@ class Register extends Component {
 
                     <label htmlFor="password2t"><b>Repeat Password</b></label>
                     <input type="password" placeholder="Repeat Password" name="password2" value={this.state.password2} required onChange={this.onChange}/>
-
+                    
+                    {this.state.loading ?  <div className="spinner"></div>: ""}
+                    
                     <div className="clearfix">
                         <button type="button" className="cancelbtn btn btn-danger" onClick={this.onCancel}>Cancel</button>
                         <button type="submit" className="signupbtn btn btn-success ">Register</button>
+                       
                     </div>
+                   
                     <p>Not a new user?? <a href='/signin'> Sign in </a>here</p>    
                 </div>
             </form>
