@@ -100,9 +100,11 @@ exports.login =async(req, res,next)=>{
 }
 
 exports.refreshToken=async(req, res, next)=>{
-
+    if(!req.cookies.jid){
+        console.log('No cookie located')
+    }
     const refreshtoken = req.cookies.jid;
-    console.log(refreshtoken)
+    console.log('refresh token==>',refreshtoken)
    
     if (!refreshtoken){
         return res.send({ok: false, accessToken: ''})
@@ -114,9 +116,14 @@ exports.refreshToken=async(req, res, next)=>{
         console.log(err)
         return res.send({ok: false, accessToken: ''})
     }
-        console.log(payload)
+        console.log('payload',payload)
         const user = await knex.select('*').from('users').where({'id':payload.userId})
-       res.cookie('jid', auth.createRefreshToken(user), {httpOnly: true})
+        console.log('user passed in to create new refresh token from refresh token method',user)
+       
+        res.cookie('jid', 
+        auth.createRefreshToken(user[0]), 
+        { maxAge: 900000, httpOnly: false})
+
     if(!user){
         return res.send({ok: false, accessToken: ""})
     }
@@ -126,10 +133,15 @@ exports.refreshToken=async(req, res, next)=>{
 
 exports.user=async(req, res, next)=>{
 
-console.log('from here',req.user)
+console.log('user is from user in usercontroller',req.user)
 if(!req.user){ 
     return res.status(200).send('No User')
 }
-const user = await knex.select('firstName', 'lastName').from('users').where({'id':req.user})
-return res.status(200).json(user)
+try {
+    const user = await knex.select('firstName', 'lastName').from('users').where({'id':req.user})
+    return res.status(200).json(user)
+} catch (error) {
+    console.log('error @ userController ==>', error)
+}
+
 }

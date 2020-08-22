@@ -59,7 +59,7 @@ exports.passwordMatchCheck = (req, res, next)=>{
 exports.createAccessToken = (newUser)=>{
   return jwt.sign(
     { userId: newUser.id },
-    process.env.ACCESS_TOKEN_SECRET,
+      process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: '5m' });
 }
 
@@ -67,6 +67,6 @@ exports.createRefreshToken = (newUser)=>{
 
   return jwt.sign(
     { userId: newUser.id },
-    process.env.REFRESH_TOKEN_SECRET,
+      process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: '1d' });
 }
