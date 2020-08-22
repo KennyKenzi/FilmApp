@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import apiCalls from '../config/api'
 import accessToken from '../config/accessToken'
-import {UserProvider} from '../Context/UserContext'
+import { Link } from 'react-router-dom';
 
 class SignIn extends Component {
     state = { 
@@ -12,8 +12,9 @@ class SignIn extends Component {
 
 
      componentDidMount=()=>{
-         console.log(accessToken.getToken())
+         
          apiCalls.getUser(accessToken.getToken())
+         console.log(accessToken.getToken())
      }
 
 
@@ -48,7 +49,6 @@ class SignIn extends Component {
 
     render() { 
         return ( 
-           <UserProvider value= {this.state.data}>
             <div>
      
                 <form className="theborderish" onSubmit={this.onSubmit}>
@@ -66,14 +66,15 @@ class SignIn extends Component {
                     <div className="clearfix">
                         <button type="submit" className="signupbtn btn btn-success ">Sign In</button>
                     </div>
-                    <p>Dont have an account <a href='/register'>Register </a>here</p>
+                    <p>Dont have an account <Link to="/register" > Register </Link>  here
+                        
+                    </p>
                     
                 </div>
             </form>
 
                 
             </div>
-            </UserProvider>
             
          )
     }

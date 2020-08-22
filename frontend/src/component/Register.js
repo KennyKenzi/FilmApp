@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import apiCalls from '../config/api'
-
+import { Link } from 'react-router-dom';
 
 class Register extends Component {
     state = { 
@@ -97,7 +97,7 @@ class Register extends Component {
                        
                     </div>
                    
-                    <p>Not a new user?? <a href='/signin'> Sign in </a>here</p>    
+                    <p>Not a new user?? <Link to="/signin" > Sign in  </Link>  here</p>    
                 </div>
             </form>
         </div>

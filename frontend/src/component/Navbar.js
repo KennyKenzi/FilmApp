@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import {UserConsumer} from '../Context/UserContext'
+import { Link } from 'react-router-dom';
 
+import accessToken from '../config/accessToken'
 
 
 class Navbar extends Component {
@@ -17,7 +18,25 @@ class Navbar extends Component {
      componentDidMount=()=>{
          this.hideElement()
 
-         console.log(this.props)
+
+        //  this.setState({loading: true}, async()=>{
+
+        //     var authtoken = accessToken.getToken()
+        //     console.log('auth token', authtoken)
+
+        //     await apiCalls.getFilms(authtoken).then(async(data)=>{
+        //         this.setState({testArray: data.data})
+                
+        //         await apiCalls.getUser(authtoken).then((user)=>{
+        //             if (user === 'No User'){
+        //                 this.setState({user: "" ,loading: false})          
+        //             }else {
+        //                 this.setState({user: user.data[0], loading: false})   
+        //             }
+                      
+        //         })
+        //     })
+        // })
      }
            
      hideElement=()=>{
@@ -35,12 +54,7 @@ class Navbar extends Component {
     }
 
     render() {
-        // if (this.state.redirectLogin) {
-        //     return <Redirect to={this.state.redirectLogin} />
-        //   }
-        //   if (this.state.redirectLogout) {
-        //     return <Redirect to={this.state.redirectLogout} />
-        //   }
+     
         return ( 
             <div>
 
@@ -49,10 +63,11 @@ class Navbar extends Component {
                 <div className="navbar ">
                     <ul className="nav navbar-nav">
                     <li className="nav-item">
-                        <a className="nav-link" href="/films">Home <span className="sr-only">(current)</span></a>
+                        <Link to="/films" > Home </Link> 
                     </li>
                     <li className="nav-item ">
-                        <a className="nav-link" href="/signin" onClick={this.clickButton}>{this.state.button}</a>
+                        {/* <a className="nav-link" href="/signin" onClick={this.clickButton}>{this.state.button}</a> */}
+                        <Link to="/signin" > Sign In/ Register </Link> 
                     </li>
 
                     
