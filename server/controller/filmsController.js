@@ -29,7 +29,7 @@ exports.addFilms=async(req, res, next)=>{
 
         var postBody = { 
           name: req.body.name,
-          description: req.body.relaseDate,
+          description: req.body.description,
           relaseDate: req.body.relaseDate,
           rating: req.body.rating,
           ticketPrice: req.body.ticketPrice,

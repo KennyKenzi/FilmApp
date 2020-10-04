@@ -1,17 +1,29 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
+import DatePicker from "react-datepicker";
+import moment from 'moment'
 
-
+import "react-datepicker/dist/react-datepicker.css";
 
 export default class AddFIlmPopUp extends Component {
 
-
+  
     state={
         
 
     }
 
-    onChange=()=>{
-        console.log('changed')
+    onChange=(e)=>{
+        if(e.target.value){
+            this.setState({ [e.target.name] : e.target.value})
+       }
+    }
+
+    handleDateSelect=(e)=>{
+       
+        var date = e
+        console.log(date)
+        // const date = moment(e).format('YYYY-MM-DD')
+         this.setState({date: date})
     }
 
     handleClick = () => {
@@ -21,7 +33,7 @@ export default class AddFIlmPopUp extends Component {
 
     onSubmit=(e)=>{
         e.preventDefault()
-      console.log('Film submitted')
+      console.log(this.state)
     }
 
 
@@ -30,7 +42,7 @@ export default class AddFIlmPopUp extends Component {
         return(
             <div>
                 <form onSubmit={this.onSubmit}>
-                    <div className="form-row">
+                    <div className="form-row overflow-auto">
                         <div className="form-group col-md-3">
                         </div>
                         <div className="form-group col-md-6">
@@ -58,11 +70,11 @@ export default class AddFIlmPopUp extends Component {
                     <div className="form-group col-md-4"></div>
                         <div className="form-group col-md-4">
                             <label htmlFor="date">Release Date</label>
-                            <input type="text" className="form-control" 
-                              id="date"
-                              value={this.state.date}
-                              name="date"
-                              onChange={this.onChange}/>
+                            <DatePicker
+                                selected={this.state.date}
+                               // onSelect={this.handleDateSelect} //when day is clicked
+                                onChange={this.handleDateSelect} //only when value has changed
+/>
                         </div>
                     </div>
 
@@ -109,6 +121,8 @@ export default class AddFIlmPopUp extends Component {
                         </select>
                         </div>
                     </div>
+                    
+                    
                     <div style={{display:'inline-block', marginBottom:10}}>
                      <button type="submit" className="btn btn-primary" >Add</button>   
                     </div>
@@ -130,9 +144,9 @@ export default class AddFIlmPopUp extends Component {
 
 render() {
   return (
-   <div className="modal" style={{display: "block"}}>
-    <hr/>
-     <div className="modal_content">
+   <div className="modal overflow-auto" style={{display: "block"}}>
+    {/* <hr/> */}
+     <div className="modal_content ">
      {this.display()} 
      <div className="close float-none"  onClick={this.handleClick}> <button style={{backgroundColor: "black"}}>&times;</button></div>
     </div>
