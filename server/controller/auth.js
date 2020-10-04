@@ -4,7 +4,7 @@ require ('dotenv').config()
 exports.auth = (req, res, next) => {
 
   if (req.headers.authorization){
-    
+
       try {
         const token = req.headers.authorization.split(' ')[1];
         const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
@@ -57,14 +57,16 @@ exports.passwordMatchCheck = (req, res, next)=>{
 }
 
 exports.createAccessToken = (newUser)=>{
+  console.log("Access Token created for: " + newUser.id)
   return jwt.sign(
     { userId: newUser.id },
       process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: '5m' });
+    
 }
 
 exports.createRefreshToken = (newUser)=>{
-
+  console.log("Refresh Token created for: " + newUser.id)
   return jwt.sign(
     { userId: newUser.id },
       process.env.REFRESH_TOKEN_SECRET,

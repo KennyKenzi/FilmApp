@@ -190,3 +190,7 @@ button:hover {
   background-color: white;
   position: absolute;
 }
+.close{
+  display: inline-block;
+
+}

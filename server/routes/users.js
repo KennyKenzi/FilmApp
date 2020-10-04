@@ -12,6 +12,6 @@ router.post('/api/register',auth.passwordMatchCheck ,user.register);
 router.get('/api/user',auth.auth ,user.user);
 
 router.post('/api/refresh_token', user.refreshToken)
-
+ 
 
 module.exports = router;

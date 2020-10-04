@@ -103,12 +103,15 @@ exports.refreshToken=async(req, res, next)=>{
     if(!req.cookies.jid){
         console.log('No cookie located')
     }
+
     const refreshtoken = req.cookies.jid;
     console.log('refresh token==>',refreshtoken)
    
     if (!refreshtoken){
         return res.send({ok: false, accessToken: ''})
     }
+
+   
     let payload = null;
     try{
         payload = jwt.verify(refreshtoken, process.env.REFRESH_TOKEN_SECRET)
@@ -119,7 +122,7 @@ exports.refreshToken=async(req, res, next)=>{
         console.log('payload',payload)
         const user = await knex.select('*').from('users').where({'id':payload.userId})
         console.log('user passed in to create new refresh token from refresh token method',user)
-       
+       console.log('...',user[0])
         res.cookie('jid', 
         auth.createRefreshToken(user[0]), 
         { maxAge: 900000, httpOnly: false})
@@ -127,7 +130,7 @@ exports.refreshToken=async(req, res, next)=>{
     if(!user){
         return res.send({ok: false, accessToken: ""})
     }
-    return res.send({ok: true, accessToken: auth.createAccessToken(user)})
+    return res.send({ok: true, accessToken: auth.createAccessToken(user[0])})
     
 }
 

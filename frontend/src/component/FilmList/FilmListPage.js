@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import FilmSection from './EachFIlmSection'
 import apiCalls from '../../config/api'
-import accessToken from '../../config/accessToken'
-import PopUp from "./Popup"; 
 
+import PopUp from "./AddFilmPopup"; 
+import axios from 'axios'
+import access from '../../config/accessToken'
 
 class FilmListPage extends Component {
     state = { 
@@ -12,70 +13,104 @@ class FilmListPage extends Component {
         user : "",
         loading: false,
         seenPopup: false
-     }
+    }
 
 
-     componentDidMount=async(e)=>{
+    componentDidMount=(async()=>{
 
         this.setState({loading: true}, async()=>{
+            
+            var authtoken = access.getToken()
+            if(authtoken){   
+                await apiCalls.getFilms(authtoken)
+                .then((data)=>{
+                    this.setState({testArray: data.data})
 
-            var authtoken = await accessToken.getToken()
-            console.log('auth token', authtoken)
-
-            await apiCalls.getFilms(authtoken).then(async(data)=>{
-                this.setState({testArray: data.data})
-                
-                await apiCalls.getUser(authtoken).then((user)=>{
-                    if (user.data === 'No User'){
-                        this.setState({user: "" ,loading: false})          
-                    }else {
-                        this.setState({user: user.data[0], loading: false})   
-                    }
-                      
+                    apiCalls.getUser(authtoken).then((user)=>{
+                        console.log(user)
+                        if (user.data === 'No User'){
+                            this.setState({user: "" ,loading: false})          
+                        }else {
+                            this.setState({user: user.data[0], loading: false})   
+                        }
+                    })
                 })
-            })
-        })
-     }
+            }else{
 
-     togglePopup = () => {
+                console.log('here')
+                axios.post('http://localhost:4000/api/refresh_token', {}, {withCredentials: true})
+                .then(res=>{
+                    console.log('here2')
+                    var data = res.data
+                    if(data.accessToken){  
+                        access.setToken(data.accessToken)
+                        authtoken =   access.getToken()
+                    }  
+                    console.log('authtoken', authtoken, this.state.loading)
+                    apiCalls.getFilms(authtoken)
+                    .then((data)=>{
+                        this.setState({testArray: data.data})
+
+                        apiCalls.getUser(authtoken).then((user)=>{
+                            console.log(user)
+                            if (user.data === 'No User'){
+                                this.setState({user: "" ,loading: false})          
+                            }else {
+                                this.setState({user: user.data[0], loading: false})   
+                            }
+                      
+                        })
+                    })  
+                })
+            }
+        })
+    })
+
+    togglePopup = () => {
         this.setState({
             seenPopup: !this.state.seenPopup
            });
-       };
+    };
 
-     addFilm=()=>{
+    addFilm=()=>{
          if(this.state.user !== ""){
                 console.log('there is a user logged in')
             this.togglePopup()
          }else {
              console.log('there is no one here')
-            // this.togglePopup()
+            this.togglePopup()
          }
-     }
+    }
+
 
 
     render() { 
-          return ( 
+        
+          return (     
             <div>
-            <div style={{display: "-webkit-inline-box"}}>
-                <h1 style={{marginRight:10}}>
-                Film List
-                </h1>
-                <button type="button" className="btn btn-primary" onClick={this.addFilm} >Add Film</button>
+                <div>
+                
+                <div style={{display: "-webkit-inline-box"}}>
+                    <h1 style={{marginRight:10}}>
+                    Film List
+                    </h1>
+                    <button type="button" className="btn btn-primary" onClick={this.addFilm} >Add Film</button>
+                </div>
+                {/* <PopUp toggle={this.togglePopup} styles={ "block"} /> */}
+                {this.state.seenPopup ? <PopUp toggle={this.togglePopup} info={this.state.user ?'addfilm':"" } position="middle" /> : null}
+                
+                {this.state.loading ?  <div className="spinner"></div>: ""}
+                <p>{this.state.user!==""? <>Welcome {this.state.user.firstName} {this.state.user.lastName}</>: ""}</p>
+    
+                    {this.state.testArray.map(element => {
+                            return<div key={element.id}><FilmSection data={element}/></div>
+                        })}
+                    </div>
+              
+                
             </div>
-            <PopUp toggle={this.togglePopup} styles={ "block"} />
-            {this.state.seenPopup ? <PopUp toggle={this.togglePopup}/> : null}
-            
-            {this.state.loading ?  <div className="spinner"></div>: ""}
-            <p>{this.state.user? <>Welcome {this.state.user.firstName} {this.state.user.lastName}</>: ""}</p>
 
-                {this.state.testArray.map(element => {
-                        return<div key={element.id}><FilmSection data={element}/></div>
-                    })}
-
-            </div>
-
-         );
+         )
     }
 }
  
