@@ -1,5 +1,6 @@
 import React, { Component, useState } from "react";
 import DatePicker from "react-datepicker";
+import placeholderimage from '../../placeholder-image.png'
 import moment from 'moment'
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -8,7 +9,7 @@ export default class AddFIlmPopUp extends Component {
 
   
     state={
-        
+        imagedisplayed: placeholderimage,
 
     }
 
@@ -16,6 +17,15 @@ export default class AddFIlmPopUp extends Component {
         if(e.target.value){
             this.setState({ [e.target.name] : e.target.value})
        }
+       if (e.target.files){
+        let image = e.target.files[0];
+
+        this.setState({
+            file: image,
+            imagedisplayed:URL.createObjectURL(image),
+            imageLabel: e.target.value
+        }) 
+    }
     }
 
     handleDateSelect=(e)=>{
@@ -121,7 +131,22 @@ export default class AddFIlmPopUp extends Component {
                         </select>
                         </div>
                     </div>
+
+                    <div>  
+                        <div className="file-field form-group">
+                            <div className="z-depth-1-half mb-4">
+                                <img src={this.state.imagedisplayed} className="img-fluid avatar-pic" alt={placeholderimage}/>
+                            </div>
+                        <div className="d-flex justify-content-center">
+                            <div className="btn btn-mdb-color btn-rounded float-left">
+                                {/* <span>Choose file</span> */}
+                                <input type="file" className="form-control-file"  name="file" value={this.state.imageLabel} onChange={this.onChange}></input>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
                     
+
                     
                     <div style={{display:'inline-block', marginBottom:10}}>
                      <button type="submit" className="btn btn-primary" >Add</button>   
