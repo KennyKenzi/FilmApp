@@ -18,5 +18,6 @@ router.post('/api/comments', auth.auth ,getComments.addComments);
 
 
 router.get('/api/film', getFilms.viewAFilm)
+router.get('/api/countries', getFilms.getCountry)
 
 module.exports = router;

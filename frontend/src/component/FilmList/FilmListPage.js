@@ -38,7 +38,7 @@ class FilmListPage extends Component {
             }else{
 
                 console.log('here')
-                axios.post('http://localhost:4000/api/refresh_token', {}, {withCredentials: true})
+                apiCalls.refresh(authtoken)
                 .then(res=>{
                     console.log('here2')
                     var data = res.data

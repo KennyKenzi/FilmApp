@@ -1,6 +1,7 @@
 const axios = require("axios")
 
 const backendUrl = 'http://localhost:4000/api'
+//const backendUrl= 'http://192.168.8.101:4000/api'
 
 
 
@@ -12,7 +13,8 @@ var api ={
     films: backendUrl+'/films',
     comments: backendUrl+'/comments',
     user: backendUrl+ '/user',
-    refresh:backendUrl + '/refresh_token'
+    refresh:backendUrl + '/refresh_token',
+    country: backendUrl+ '/countries'
 }
 
 
@@ -57,4 +59,7 @@ exports.refresh = async(auth)=>{
     return await axios.post(api.refresh, {}, { headers: {
         'Authorization': auth? 'Bearer ' + auth: "" 
       }, withCredentials: true})
+}
+exports.getCountries = async()=>{
+    return await axios.get(api.country)
 }

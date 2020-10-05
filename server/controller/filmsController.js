@@ -1,5 +1,6 @@
 const { knex } = require('../db/knex');
 const {upload, multer} = require('../db/multer')
+const moment = require('moment')
 
 exports.getFilms=async(req, res, next)=>{
 
@@ -16,7 +17,7 @@ exports.getFilms=async(req, res, next)=>{
 exports.addFilms=async(req, res, next)=>{
 
     upload(req, res, async function (err) {
-        console.log('herererer')
+        
 
         if (err instanceof multer.MulterError) {
             console.log('1==',err)
@@ -25,12 +26,13 @@ exports.addFilms=async(req, res, next)=>{
             console.log('2==',err)
             return res.status(500).json(err)
         }
-        console.log('3===', req.file)
+
+        console.log('3===', req.file.filename)
 
         var postBody = { 
           name: req.body.name,
           description: req.body.description,
-          relaseDate: req.body.relaseDate,
+          releaseDate: moment(req.body.relaseDate).format('YYYY-MM-DD HH:mm:ss'),
           rating: req.body.rating,
           ticketPrice: req.body.ticketPrice,
           country: req.body.country,
@@ -42,7 +44,7 @@ exports.addFilms=async(req, res, next)=>{
             res.status(200).json(films) 
         } catch (error) {
             res.json(error).status(500) 
-            console.log('4==',err)
+            console.log('4==',error)
         }
         
       })
@@ -58,6 +60,16 @@ exports.viewAFilm=async(req, res, next)=>{
     .then((film)=>{
         console.log(film)
         res.send(film).status(200)
+    })
+
+}
+
+
+exports.getCountry=async(req, res, next)=>{
+    await knex.select('*').from('countries')
+    .then((countries)=>{
+       // console.log(films)
+        res.status(200).json(countries)
     })
 
 }

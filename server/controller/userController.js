@@ -54,6 +54,7 @@ exports.login =async(req, res,next)=>{
                     });
                 }
                 try {
+                    
                     bcrypt.compare(req.body.password, newUser.password)
                     .then((valid) => {
                             if (!valid) {                
@@ -62,7 +63,6 @@ exports.login =async(req, res,next)=>{
                                     message: 'No user/password'
                                 });
                             }
-
                             res.cookie(
                                 "jid", 
                                 auth.createRefreshToken(newUser),
