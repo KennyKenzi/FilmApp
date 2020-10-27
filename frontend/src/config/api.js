@@ -1,6 +1,7 @@
 const axios = require("axios")
 
 const backendUrl = 'http://localhost:4000/api'
+const imgUrl = 'http://localhost:4000/'
 //const backendUrl= 'http://192.168.8.101:4000/api'
 
 
@@ -14,7 +15,8 @@ var api ={
     comments: backendUrl+'/comments',
     user: backendUrl+ '/user',
     refresh:backendUrl + '/refresh_token',
-    country: backendUrl+ '/countries'
+    country: backendUrl+ '/countries',
+    image : imgUrl
 }
 
 
@@ -62,4 +64,8 @@ exports.refresh = async(auth)=>{
 }
 exports.getCountries = async()=>{
     return await axios.get(api.country)
+}
+exports.getImages = async(img)=>{
+    console.log(img)
+    return  api.image +"images/" + img
 }

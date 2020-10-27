@@ -13,7 +13,7 @@ exports.seed = function(knex) {
           rating: 1, 
           ticketPrice: '1000',
           country: 'United States',
-          image: 'oldguard.png',
+          image: 'oldguard.jpg',
         },
         {
           id: 2, 
@@ -23,7 +23,7 @@ exports.seed = function(knex) {
           rating: 5, 
           ticketPrice: '1500',
           country: 'China',
-          image: 'parasite.png',
+          image: 'parasite.jpg',
         },
 
         {
@@ -34,7 +34,7 @@ exports.seed = function(knex) {
           rating: 3, 
           ticketPrice: '1200',
           country: 'Canada',
-          image: 'sonic.png',
+          image: 'sonic.jpg',
         },
       
       ]);

@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 import placeholderimage from '../../placeholder-image.png'
 import moment from 'moment'
 import apiCalls from '../../config/api'
+import data from '../../config/randomData'
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -13,29 +14,7 @@ export default class AddFIlmPopUp extends Component {
         imagedisplayed: placeholderimage,
         ticket: "",
         countries: [],
-        genresList:[
-            {name:"Comedy", id:1},
-            {name:"Fantasy", id:2},
-            {name:"Crime", id:3},
-            {name:"Drama", id:4},
-            {name:"Music", id:5},
-            {name:"Adventure", id:6},
-            {name:"History", id:7},
-            {name:"Thriller", id:8},
-            {name:"Animation", id:9},
-            {name:"Family", id:10},
-            {name:"Mystery", id:11},
-            {name:"Biography", id:12},
-            {name:"Action", id:13},
-            {name:"Film-Noir", id:14},
-            {name:"Romance", id:15},
-            {name:"Sci-Fi", id:16},
-            {name:"War", id:17},
-            {name:"Western", id:18},
-            {name:"Horror", id:19},
-            {name:"Musical", id:20},
-            {name:"Sport", id:21}
-        ]
+        genresList: data.genreData()
     }
 
     componentDidMount=async()=>{
@@ -77,17 +56,16 @@ export default class AddFIlmPopUp extends Component {
     }
 
     handleDateSelect=(e)=>{
-
      this.setState({date: e})
     }
 
     handleClick = () => {
-    this.props.toggle();
+        this.props.toggle();
     };
 
 
     onSubmit=async(e)=>{
-        e.preventDefault()
+       e.preventDefault()
 
      const formBody = new FormData()
       
@@ -101,23 +79,12 @@ export default class AddFIlmPopUp extends Component {
         formBody.append('file',this.state.file)
       console.log(this.state.file)
       console.log(formBody)
+
       await apiCalls.createFilm(formBody,{'Content-Type':'multipart/form-data'})
       .then(()=>{
           this.handleClick()
-
-            // this.setState({
-            //     name: "",
-            //     description: "",
-            //     date: "",
-            //     rating: "",
-            //     price: "",
-            //     country: "",
-            //     genre: "",
-            //     imageLabel: "",
-            //     imagedisplayed:placeholderimage
-            // })
-      })
-
+      }, )
+        
       
     }
 

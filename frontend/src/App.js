@@ -6,6 +6,7 @@ import FilmList from './component/FilmList/FilmListPage'
 import SignIn from './component/SignIn_'
 import Register from './component/Register'
 import Navbar from './component/Navbar'
+import Film from './component/FilmList/Film'
 
 
 
@@ -33,7 +34,7 @@ function App() {
                 <Route path="/films" component={FilmList}/>
                 <Route path="/signin" component={SignIn}/>
                 <Route path="/register" component={Register}/>
-                {/* <Route path="/allposts" component={film}/> */}
+                <Route path="/viewfilm" component={Film}/>
                 {/* <Route path="/unpublished" component={UnPublishedPost}/> */}
 
                 <Route component={Error}/>
