@@ -14,6 +14,7 @@ exports.seed = function(knex) {
           ticketPrice: '1000',
           country: 'United States',
           image: 'oldguard.jpg',
+          genre: 'Action'
         },
         {
           id: 2, 
@@ -24,6 +25,7 @@ exports.seed = function(knex) {
           ticketPrice: '1500',
           country: 'China',
           image: 'parasite.jpg',
+          genre: 'Thriller'
         },
 
         {
@@ -35,6 +37,7 @@ exports.seed = function(knex) {
           ticketPrice: '1200',
           country: 'Canada',
           image: 'sonic.jpg',
+          genre: 'Fantasy'
         },
       
       ]);

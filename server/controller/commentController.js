@@ -9,6 +9,17 @@ exports.getComments=async(req, res, next)=>{
     })
 
 }
+exports.getAComment=async(req, res, next)=>{
+    console.log(req.params)
+    var id= req.params.id
+
+    await knex.select('*').from('comments').where({'filmID': id})
+    .then((comments)=>{
+        res.send(comments).status(200)
+    })
+
+}
+
 
 exports.addComments=async(req, res, next)=>{
 

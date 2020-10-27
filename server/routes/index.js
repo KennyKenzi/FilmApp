@@ -14,6 +14,7 @@ router.get('/api/films', auth.auth, getFilms.getFilms);
 router.post('/api/films', getFilms.addFilms);
 
 router.get('/api/comments', getComments.getComments);
+router.get('/api/filmcomment/:id', getComments.getAComment);
 router.post('/api/comments', auth.auth ,getComments.addComments);
 
 
