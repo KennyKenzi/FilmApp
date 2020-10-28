@@ -17,6 +17,7 @@ var api ={
     refresh:backendUrl + '/refresh_token',
     country: backendUrl+ '/countries',
     filmcomments: backendUrl +'/filmComment',
+    commentUser: backendUrl+'/comment/user',
     image : imgUrl
 }
 
@@ -48,14 +49,19 @@ exports.createFilm = async(body, auth)=>{
       }})
 }
 
-exports.getFilmComments = async(id)=>{
 
-    console.log(api.filmcomments+"/"+ id)
+exports.getFilmComments = async(id)=>{
     return await axios.get(api.filmcomments +"/"+ id)
 }
 
 exports.postComment = async(body, auth)=>{
     return await axios.post(api.comment, body, { headers: {
+        'Authorization': auth? 'Bearer ' + auth: "" 
+      }})
+}
+
+exports.getCommentUser = async(id, auth)=>{
+    return await axios.get(api.commentUser+'/'+id, { headers: {
         'Authorization': auth? 'Bearer ' + auth: "" 
       }})
 }
@@ -69,6 +75,5 @@ exports.getCountries = async()=>{
     return await axios.get(api.country)
 }
 exports.getImages = async(img)=>{
-    console.log(img)
     return  api.image +"images/" + img
 }

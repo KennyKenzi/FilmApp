@@ -148,3 +148,14 @@ try {
 }
 
 }
+
+exports.commentUser = async(req, res, next)=>{
+
+    var id = req.params.id
+    try {
+        const user = await knex.select('firstName', 'lastName').from('users').where({'id':id})
+        return res.status(200).json(user)
+    } catch (error) {
+        console.log('error @ userCommentUserController ==>', error)
+    }
+}

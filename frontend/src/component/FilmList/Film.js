@@ -1,17 +1,49 @@
 import React, { Component } from 'react';
 import apiCalls from '../../config/api'
 import Comments from './CommentSection'
+import access from '../../config/accessToken'
 
 
 class Film extends Component {
     state = { 
-        loading: false
+        loading: false,
+        user :""
      }
 
 
     componentDidMount=async()=>{
-        this.setState({
-            loading: true
+        this.setState({loading: true}, async()=>{
+            var authtoken = access.getToken()
+            if(authtoken){   
+                    apiCalls.getUser(authtoken).then((user)=>{
+                        console.log(user)
+                        if (user.data === 'No User'){
+                            this.setState({user: "" ,loading: false})          
+                        }else {
+                            this.setState({user: user.data[0], loading: false})   
+                        }
+                    })
+            }else{
+                console.log('here')
+                apiCalls.refresh(authtoken)
+                .then(res=>{
+                    var data = res.data
+                    if(data.accessToken){  
+                        access.setToken(data.accessToken)
+                        authtoken =   access.getToken()
+                    }  
+                    console.log('authtoken', authtoken, this.state.loading)
+                        apiCalls.getUser(authtoken).then((user)=>{
+                            console.log(user)
+                            if (user.data === 'No User'){
+                                this.setState({user: "" ,loading: false})          
+                            }else {
+                                this.setState({user: user.data[0], loading: false})   
+                            }
+                      
+                        })
+                })
+            }
         })
 
         this.setState({
@@ -19,22 +51,22 @@ class Film extends Component {
         })
 
         await apiCalls.getFilmComments(this.props.location.state.id)
-        .then(async(res)=>{
+        .then(async(res)=>{ 
             await this.setState({
                 comments: res.data,
-                loading: false
+                // loading: false
             })
         })
     }
 
 
     render() { 
-        console.log(this.state.comments)
         var film = this.props.location.state
         return ( 
 
             <div>
                 Film Page
+                <p>{this.state.user!==""? <>Welcome {this.state.user.firstName} {this.state.user.lastName}</>: ""}</p>
                 <div>
                     <h1>
                         {film.name}
@@ -57,25 +89,23 @@ class Film extends Component {
                         </div> 
                     </div>
                 </div>
-                <h1>Comments</h1>
-                <h2>Coming soon...when i have the time</h2>
-                {this.state.loading ?  <div className="spinner"></div>: ""}
                 <div>
-{/* 
-                    {
-                        this.state.comments? 
-                        this.state.comments.map(element=>{
-                            return<div key={element.id}><Comments data={element}/></div>
-                        }): ""
-                    } */}
-                      {
-                        this.state.comments? 
-                        this.state.comments.forEach(element=>{
-                            return<div key={element.id}><Comments data={element}/></div>
-                        }): ""
-                    }
+                    <div>
+                        <h1>Comments</h1>
+                        {this.state.user!==""? <button type="button" class="btn btn-outline-dark btn-small" style={{inlineSize:'min-content', marginBottom:10}}>Add</button>: ""}
+                    </div>
 
-                    
+                    {this.state.loading ?  <div className="spinner"></div>: ""}
+                    <div style={{width:'95%', display:'inline-block'}}>
+    
+                        {
+                            this.state.comments? 
+                            this.state.comments.map(element=>{
+                            return<div key={element.id}><Comments data={element}/></div>
+                            }): ""
+                        }
+
+                    </div>
                 </div>
             </div>
 

@@ -103,7 +103,7 @@ class FilmListPage extends Component {
                 <p>{this.state.user!==""? <>Welcome {this.state.user.firstName} {this.state.user.lastName}</>: ""}</p>
     
                     {this.state.testArray.map(element => {
-                            return<div key={element.id}><FilmSection data={element}/></div>
+                            return<div style={{maxWidth:'70%', display:'inline-block'}} key={element.id}><FilmSection data={element}/></div>
                         })}
                     </div>
               
