@@ -107,7 +107,7 @@ exports.refreshToken=async(req, res, next)=>{
 
 
     const refreshtoken = req.cookies.jid;
-//     await checkBlacklist(refreshtoken)
+    // await checkBlacklist(refreshtoken)
 
     if (!refreshtoken){
         return res.send({ok: false, accessToken: ''})
