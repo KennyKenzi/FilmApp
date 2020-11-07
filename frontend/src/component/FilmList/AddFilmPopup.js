@@ -84,7 +84,7 @@ export default class AddFIlmPopUp extends Component {
           this.handleClick()
       }, )
         
-      
+      window.location.reload(false);
     }
 
 

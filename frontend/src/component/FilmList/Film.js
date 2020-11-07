@@ -60,6 +60,8 @@ class Film extends Component {
         })
     }
 
+
+
     togglePopup = () => {
         this.setState({
             seenPopup: !this.state.seenPopup

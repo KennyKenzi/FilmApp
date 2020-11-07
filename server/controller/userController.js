@@ -93,25 +93,25 @@ exports.login =async(req, res,next)=>{
             error: "No parameters included"
         });
     }
+ 
+}
 
-       
-
-   
+checkBlacklist= async(refreshtoken)=>{
+    await knex.select('*').from('token').where({'token': refreshtoken})
+    .then((res)=>{
+        console.log('this is blacklist', res)
+    })
 }
 
 exports.refreshToken=async(req, res, next)=>{
-    if(!req.cookies.jid){
-        console.log('No cookie located')
-    }
+
 
     const refreshtoken = req.cookies.jid;
-    console.log('refresh token==>',refreshtoken)
-   
+    await checkBlacklist(refreshtoken)
+
     if (!refreshtoken){
         return res.send({ok: false, accessToken: ''})
     }
-
-   
     let payload = null;
     try{
         payload = jwt.verify(refreshtoken, process.env.REFRESH_TOKEN_SECRET)
@@ -119,10 +119,9 @@ exports.refreshToken=async(req, res, next)=>{
         console.log(err)
         return res.send({ok: false, accessToken: ''})
     }
-        console.log('payload',payload)
+        // console.log('payload',payload)
         const user = await knex.select('*').from('users').where({'id':payload.userId})
-        console.log('user passed in to create new refresh token from refresh token method',user)
-       console.log('...',user[0])
+
         res.cookie('jid', 
         auth.createRefreshToken(user[0]), 
         { maxAge: 900000, httpOnly: false})
@@ -132,25 +131,27 @@ exports.refreshToken=async(req, res, next)=>{
     }
     return res.send({ok: true, accessToken: auth.createAccessToken(user[0])})
     
+
+
 }
 
 exports.user=async(req, res, next)=>{
 
-console.log('user is from user in usercontroller',req.user)
-if(!req.user){ 
-    return res.status(200).send('No User')
-}
-try {
-    const user = await knex.select('firstName', 'lastName', 'id').from('users').where({'id':req.user})
-    return res.status(200).json(user)
-} catch (error) {
-    console.log('error @ userController ==>', error)
-}
+    console.log('user is from user in usercontroller',req.user)
+    if(!req.user){ 
+        return res.status(200).send('No User')
+    }
+    try {
+        const user = await knex.select('firstName', 'lastName', 'id').from('users').where({'id':req.user})
+        return res.status(200).json(user)
+    } catch (error) {
+        console.log('error @ userController ==>', error)
+    }
 
 }
 
 exports.commentUser = async(req, res, next)=>{
-
+    console.log(req.params.id)
     var id = req.params.id
     try {
         const user = await knex.select('firstName', 'lastName').from('users').where({'id':id})
@@ -158,4 +159,24 @@ exports.commentUser = async(req, res, next)=>{
     } catch (error) {
         console.log('error @ userCommentUserController ==>', error)
     }
+    next();
+}
+
+exports.logout = async(req, res, next)=>{
+    
+    const token = req.body
+    try {
+        await knex.insert(token).into('token')
+        .then(() => {
+                res.status(201).json({
+                message: 'Token blacklisted!'
+            });
+        })}      
+    catch (error) {
+            res.status(500).json({  
+                error: error,
+                message: "Could not save information"
+        });
+    }
+    next()
 }

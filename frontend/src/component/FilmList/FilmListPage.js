@@ -81,7 +81,15 @@ class FilmListPage extends Component {
          }
     }
 
-
+    clickLogout=async()=>{
+        const token = {
+            token: access.getToken()
+        }
+            
+        var res = await apiCalls.logout(token)
+        console.log(res)
+        window.location.reload(false);
+    }
 
     render() { 
         
@@ -89,17 +97,25 @@ class FilmListPage extends Component {
             <div>
                 <div>
                 
-                <div style={{display: "-webkit-inline-box"}}>
-                    <h1 style={{marginRight:10}}>
+                {this.state.loading ?  <div className="spinner"></div>: ""}
+                <div style={{marginBottom: 20}}>
+                     <p style={{display:"contents"}}>{this.state.user!==""? <>Welcome {this.state.user.firstName} {this.state.user.lastName}</>: ""}</p> 
+                        <button type="button" className="btn btn-danger" style={{width: "auto", marginLeft: 20}} onClick={this.clickLogout}>Logout</button>
+                </div>
+
+
+                <div style={{marginBottom: 30}}>
+                    <h1 style={{marginRight:10, display: "contents"}}>
                     Film List
                     </h1>
-                    <button type="button" className="btn btn-primary" onClick={this.addFilm} >Add Film</button>
+                    <button style={{width: "auto"}} type="button" className="btn btn-primary" onClick={this.addFilm} >Add Film</button>
                 </div>
                 {/* <PopUp toggle={this.togglePopup} styles={ "block"} /> */}
                 {this.state.seenPopup ? <PopUp toggle={this.togglePopup} info={this.state.user ?'addfilm':"" } position="middle" /> : null}
                 
-                {this.state.loading ?  <div className="spinner"></div>: ""}
-                <p>{this.state.user!==""? <>Welcome {this.state.user.firstName} {this.state.user.lastName}</>: ""}</p>
+
+              
+
     
                     {this.state.testArray.map(element => {
                             return<div style={{maxWidth:'70%', display:'inline-block'}} key={element.id}><FilmSection data={element}/></div>

@@ -1,12 +1,9 @@
-import React, { Component, useState } from "react";
-import DatePicker from "react-datepicker";
-import placeholderimage from '../../placeholder-image.png'
+import React, { Component } from "react";
 import moment from 'moment'
 import apiCalls from '../../config/api'
 import access from '../../config/accessToken'
 
 import "react-datepicker/dist/react-datepicker.css";
-import { AccessTime } from "@material-ui/icons";
 
 export default class AddCommentPopUp extends Component {
 
@@ -18,6 +15,9 @@ export default class AddCommentPopUp extends Component {
 
     componentDidMount=async()=>{
 
+        this.setState({
+            auth: access.getToken()
+        })
     }
 
     onChange=(e)=>{
@@ -32,9 +32,7 @@ export default class AddCommentPopUp extends Component {
 
     onSubmit=async(e)=>{
 
-    e.preventDefault()
-    const auth = access.getToken()
-
+     e.preventDefault()
      const postBody ={
          comment : this.state.comment,
          createdAt: moment().format('YYYY-MM-DD HH:mm:ss'),
@@ -44,11 +42,12 @@ export default class AddCommentPopUp extends Component {
 
       console.log(postBody)
 
-      await apiCalls.postComment(postBody, auth)
+      await apiCalls.postComment(postBody, this.state.auth)
       .then(()=>{
           this.handleClick()
       }, )
-        
+      
+      window.location.reload(false);
       
     }
 

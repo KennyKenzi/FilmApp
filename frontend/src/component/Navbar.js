@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-//import accessToken from '../config/accessToken'
+// import accessToken from '../config/accessToken'
 
 
 class Navbar extends Component {
@@ -15,9 +15,20 @@ class Navbar extends Component {
 
     //  static contextType = UserContext
 
-     componentDidMount=()=>{
-         this.hideElement()
+    componentDidMount=async()=>{
 
+
+        //  var auth = accessToken.getToken()
+        //  console.log(auth)
+        //     if (auth){
+        //         this.setState({
+        //             user : true,
+        //             token: auth
+        //         })
+        //         console.log('herererererr')
+        //     }else{
+
+        //     }
 
         //  this.setState({loading: true}, async()=>{
 
@@ -37,7 +48,7 @@ class Navbar extends Component {
         //         })
         //     })
         // })
-     }
+    }
            
      hideElement=()=>{
         if(this.state.user){
@@ -54,7 +65,7 @@ class Navbar extends Component {
     }
 
     render() {
-     
+     console.log(this.state)
         return ( 
             <div>
 

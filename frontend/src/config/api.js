@@ -18,7 +18,8 @@ var api ={
     country: backendUrl+ '/countries',
     filmcomments: backendUrl +'/filmComment',
     commentUser: backendUrl+'/comment/user',
-    image : imgUrl
+    image : imgUrl,
+    logout: backendUrl+'/logout'
 }
 
 
@@ -55,7 +56,6 @@ exports.getFilmComments = async(id)=>{
 }
 
 exports.postComment = async(body, auth)=>{
-    console.log(api.comment)
     return await axios.post(api.comments, body, { headers: {
         'Authorization': auth? 'Bearer ' + auth: "" 
       }})
@@ -77,4 +77,8 @@ exports.getCountries = async()=>{
 }
 exports.getImages = async(img)=>{
     return  api.image +"images/" + img
+}
+
+exports.logout = async(auth)=>{
+    return await axios.post(api.logout, auth)
 }
