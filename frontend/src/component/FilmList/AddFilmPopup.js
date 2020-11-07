@@ -1,7 +1,6 @@
-import React, { Component, useState } from "react";
+import React, { Component} from "react";
 import DatePicker from "react-datepicker";
 import placeholderimage from '../../placeholder-image.png'
-import moment from 'moment'
 import apiCalls from '../../config/api'
 import data from '../../config/randomData'
 

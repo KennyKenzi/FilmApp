@@ -55,7 +55,8 @@ exports.getFilmComments = async(id)=>{
 }
 
 exports.postComment = async(body, auth)=>{
-    return await axios.post(api.comment, body, { headers: {
+    console.log(api.comment)
+    return await axios.post(api.comments, body, { headers: {
         'Authorization': auth? 'Bearer ' + auth: "" 
       }})
 }

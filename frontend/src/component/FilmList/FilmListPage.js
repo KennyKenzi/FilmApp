@@ -3,7 +3,6 @@ import FilmSection from './EachFIlmSection'
 import apiCalls from '../../config/api'
 
 import PopUp from "./AddFilmPopup"; 
-import axios from 'axios'
 import access from '../../config/accessToken'
 
 class FilmListPage extends Component {

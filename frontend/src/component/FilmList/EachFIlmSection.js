@@ -6,9 +6,7 @@ import { Link } from 'react-router-dom';
 class FilmSection extends Component {
     state = {  }
 
-    viewMore=()=>{
-        console.log(this.props)
-    }
+
 
     render() { 
         

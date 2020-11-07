@@ -188,7 +188,8 @@ button:hover {
 }
 .modal_content {
   background-color: white;
-  position: absolute;
+  position: relative;
+  margin: 50px 50px 50px 50px;
 }
 .close{
   display: inline-block;

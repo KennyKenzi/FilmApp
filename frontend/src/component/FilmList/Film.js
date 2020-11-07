@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import apiCalls from '../../config/api'
 import Comments from './CommentSection'
 import access from '../../config/accessToken'
+import PopUp from '../FilmList/AddCommentPopup'
 
 
 class Film extends Component {
     state = { 
         loading: false,
-        user :""
+        user :"",
+        seenPopup: false,
      }
 
 
@@ -16,7 +18,6 @@ class Film extends Component {
             var authtoken = access.getToken()
             if(authtoken){   
                     apiCalls.getUser(authtoken).then((user)=>{
-                        console.log(user)
                         if (user.data === 'No User'){
                             this.setState({user: "" ,loading: false})          
                         }else {
@@ -34,7 +35,7 @@ class Film extends Component {
                     }  
                     console.log('authtoken', authtoken, this.state.loading)
                         apiCalls.getUser(authtoken).then((user)=>{
-                            console.log(user)
+
                             if (user.data === 'No User'){
                                 this.setState({user: "" ,loading: false})          
                             }else {
@@ -59,11 +60,20 @@ class Film extends Component {
         })
     }
 
+    togglePopup = () => {
+        this.setState({
+            seenPopup: !this.state.seenPopup
+           });
+    };
+
+    addComment=()=>{
+        this.togglePopup()
+   }
 
     render() { 
         var film = this.props.location.state
         return ( 
-
+            
             <div>
                 Film Page
                 <p>{this.state.user!==""? <>Welcome {this.state.user.firstName} {this.state.user.lastName}</>: ""}</p>
@@ -71,7 +81,7 @@ class Film extends Component {
                     <h1>
                         {film.name}
                     </h1>
-                        <img src={this.state.image}/>
+                        <img src={this.state.image} alt=""/>
                     <div>
                         <div><p><b>{film.releaseDate.slice(0,10)}</b></p></div>
                     </div>
@@ -92,8 +102,11 @@ class Film extends Component {
                 <div>
                     <div>
                         <h1>Comments</h1>
-                        {this.state.user!==""? <button type="button" class="btn btn-outline-dark btn-small" style={{inlineSize:'min-content', marginBottom:10}}>Add</button>: ""}
+                        {this.state.user!==""? <button type="button" className="btn btn-outline-dark btn-small" style={{inlineSize:'min-content', marginBottom:10}} onClick={this.addComment}>Add</button>: ""}
                     </div>
+
+                    {this.state.seenPopup ? <PopUp toggle={this.togglePopup} filmid={film.id} userID={this.state.user.id}/> : null}
+
 
                     {this.state.loading ?  <div className="spinner"></div>: ""}
                     <div style={{width:'95%', display:'inline-block'}}>
@@ -101,7 +114,7 @@ class Film extends Component {
                         {
                             this.state.comments? 
                             this.state.comments.map(element=>{
-                            return<div key={element.id}><Comments data={element}/></div>
+                            return<div key={element.id}><Comments data={element} /></div>
                             }): ""
                         }
 

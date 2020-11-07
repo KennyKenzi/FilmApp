@@ -141,7 +141,7 @@ if(!req.user){
     return res.status(200).send('No User')
 }
 try {
-    const user = await knex.select('firstName', 'lastName').from('users').where({'id':req.user})
+    const user = await knex.select('firstName', 'lastName', 'id').from('users').where({'id':req.user})
     return res.status(200).json(user)
 } catch (error) {
     console.log('error @ userController ==>', error)

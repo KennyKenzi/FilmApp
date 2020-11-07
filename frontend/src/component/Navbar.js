@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import accessToken from '../config/accessToken'
+//import accessToken from '../config/accessToken'
 
 
 class Navbar extends Component {

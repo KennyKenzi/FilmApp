@@ -1,4 +1,4 @@
-import React, {useState, useEffect  } from 'react';
+import React, {useState} from 'react';
 import apiCalls from '../config/api'
 import accessToken from '../config/accessToken'
 import { Link } from 'react-router-dom';

@@ -23,18 +23,22 @@ exports.getAComment=async(req, res, next)=>{
 
 exports.addComments=async(req, res, next)=>{
 
+
         var postBody = { 
-            filmID: req.body.filmID,
+            filmID: req.body.filmID, 
             userID: req.body.userID,
             comment: req.body.comment,
-            date: req.body.date
+            createdAt: req.body.createdAt
         }
+
+        console.log(postBody)
+
         try {
-            const comment = await knex.insert(postBody).into('films')
+            const comment = await knex.insert(postBody).into('comments')
             res.json(comment).status(200) 
         } catch (error) {
             res.json(error).status(500) 
-            console.log('4==',err)
+            console.log('4==',error)
         }
         
 
