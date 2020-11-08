@@ -48,7 +48,7 @@ exports.passwordMatchCheck = (req, res, next)=>{
     next()
   }else{
     res.status(400).json({
-      error: error,
+      error: Error,
       message: "Password does not match"
     })
 

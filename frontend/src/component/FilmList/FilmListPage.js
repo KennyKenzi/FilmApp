@@ -36,10 +36,9 @@ class FilmListPage extends Component {
                 })
             }else{
 
-                console.log('here')
                 apiCalls.refresh(authtoken)
                 .then(res=>{
-                    console.log('here2')
+
                     var data = res.data
                     if(data.accessToken){  
                         access.setToken(data.accessToken)
@@ -51,7 +50,7 @@ class FilmListPage extends Component {
                         this.setState({testArray: data.data})
 
                         apiCalls.getUser(authtoken).then((user)=>{
-                            console.log(user)
+                            console.log(user.data[0])
                             if (user.data === 'No User'){
                                 this.setState({user: "" ,loading: false})          
                             }else {
@@ -82,12 +81,10 @@ class FilmListPage extends Component {
     }
 
     clickLogout=async()=>{
-        const token = {
-            token: access.getToken()
-        }
-            
-        var res = await apiCalls.logout(token)
+  
+        var res = await apiCalls.logout(document.cookie)
         console.log(res)
+        console.log(document.cookie.jid)
         window.location.reload(false);
     }
 
@@ -99,8 +96,9 @@ class FilmListPage extends Component {
                 
                 {this.state.loading ?  <div className="spinner"></div>: ""}
                 <div style={{marginBottom: 20}}>
-                     <p style={{display:"contents"}}>{this.state.user!==""? <>Welcome {this.state.user.firstName} {this.state.user.lastName}</>: ""}</p> 
-                        <button type="button" className="btn btn-danger" style={{width: "auto", marginLeft: 20}} onClick={this.clickLogout}>Logout</button>
+                     <p style={{display:"contents"}}>{this.state.user!==""? <>Welcome {this.state.user.firstName} {this.state.user.lastName}</>: <>Welcome Guest</>}</p> 
+                        {this.state.user!==""? <button type="button" className="btn btn-danger" style={{width: "auto", marginLeft: 20}} onClick={this.clickLogout}>Logout</button> :""}
+                        
                 </div>
 
 

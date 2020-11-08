@@ -27,6 +27,7 @@ class Register extends Component {
               
                 (response)=>{
                     console.log(response)
+                    alert('User registered successfully')
                     this.setState({
                         firstName: '',
                         lastName: '',
@@ -41,12 +42,9 @@ class Register extends Component {
 
                 (error)=>{
                     console.log(error.response.data.message)
+                    alert(error.response.data.message)
                     this.setState({
-                        firstName: '',
-                        lastName: '',
-                        username: '',
-                        password: '',
-                        password2: '',
+
                         loading: false ,
                         status: 'failed'
                     })

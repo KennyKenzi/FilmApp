@@ -9,7 +9,7 @@ require('dotenv').config()
 
 
 exports.register =(req, res,next)=>{
-
+console.log(req.body)
         bcrypt.hash(req.body.password, 10).then(
             async(hash) => {
                 const user = {
@@ -96,22 +96,30 @@ exports.login =async(req, res,next)=>{
  
 }
 
-checkBlacklist= async(refreshtoken)=>{
-    await knex.select('*').from('token').where({'token': refreshtoken})
-    .then((res)=>{
-        console.log('this is blacklist', res)
-    })
-}
+
 
 exports.refreshToken=async(req, res, next)=>{
 
-
     const refreshtoken = req.cookies.jid;
-    await checkBlacklist(refreshtoken)
+    // console.log(refreshtoken)
+
 
     if (!refreshtoken){
         return res.send({ok: false, accessToken: ''})
-    }
+    } 
+
+    
+         const blacklist = await knex.select('token').from('token').where({'token': refreshtoken})
+        if(blacklist[0]){
+            if(blacklist[0].token.length > 1){
+                return res.send({ok: false, accessToken: ''})
+            }else {
+                console.log('does not exist')
+                }
+            }    
+            
+    
+
     let payload = null;
     try{
         payload = jwt.verify(refreshtoken, process.env.REFRESH_TOKEN_SECRET)
@@ -164,7 +172,11 @@ exports.commentUser = async(req, res, next)=>{
 
 exports.logout = async(req, res, next)=>{
     
-    const token = req.body
+    const token = {token: req.body.jid}
+    const refreshtoken = req.cookies.jid;
+
+    // console.log(token)
+    // console.log(refreshtoken)
     try {
         await knex.insert(token).into('token')
         .then(() => {

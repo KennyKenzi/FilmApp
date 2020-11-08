@@ -68,17 +68,23 @@ exports.getCommentUser = async(id, auth)=>{
 }
 
 exports.refresh = async(auth)=>{
+    console.log(auth)
     return await axios.post(api.refresh, {}, { headers: {
         'Authorization': auth? 'Bearer ' + auth: "" 
       }, withCredentials: true})
 }
+
 exports.getCountries = async()=>{
     return await axios.get(api.country)
 }
+
 exports.getImages = async(img)=>{
     return  api.image +"images/" + img
 }
 
 exports.logout = async(auth)=>{
-    return await axios.post(api.logout, auth)
+    console.log(auth)
+    return await axios.post(api.logout, auth, { headers: {
+        'Authorization': auth? 'Bearer ' + auth: "" 
+      }, withCredentials: true})
 }

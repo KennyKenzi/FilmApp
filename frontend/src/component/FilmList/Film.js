@@ -72,13 +72,23 @@ class Film extends Component {
         this.togglePopup()
    }
 
+   clickLogout=async()=>{
+        var res = await apiCalls.logout(document.cookie)
+        console.log(res)
+        console.log(document.cookie.jid)
+        window.location.reload(false);
+    }
+
     render() { 
         var film = this.props.location.state
         return ( 
             
             <div>
                 Film Page
-                <p>{this.state.user!==""? <>Welcome {this.state.user.firstName} {this.state.user.lastName}</>: ""}</p>
+                <div style={{marginBottom: 20}}>
+                <p style={{display:"contents"}}>{this.state.user!==""? <>Welcome {this.state.user.firstName} {this.state.user.lastName}</>: ""}</p>
+                {this.state.user!==""? <button type="button" className="btn btn-danger" style={{width: "auto", marginLeft: 20}} onClick={this.clickLogout}>Logout</button> :""}
+                </div>
                 <div>
                     <h1>
                         {film.name}

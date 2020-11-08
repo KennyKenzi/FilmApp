@@ -43,7 +43,13 @@ const SignIn = (props) => {
                     props.history.push(`/films`);
                }, 
                    (err)=>{
+                       
                        console.log(err.response)
+                       if(err.response.status === 401){
+                        alert('Username or password does not exist')
+                       }else {
+                        alert('Unable to sign in')
+                       }
                    } 
                    
                )
