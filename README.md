@@ -8,8 +8,9 @@
 3. "npm install"
 
 4. Create .env file in the format of .env.example and enter local db details
+#Set FRONT_END_URL to 'http://localhost:3000'
 
-5. In 'server' folder, run "npx knex migrate:latest" in termina;
+5. In 'server' folder, run "npx knex migrate:latest" in terminal;
 
 6. Then run "npx knex seed:run"
 
