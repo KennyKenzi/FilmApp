@@ -116,7 +116,7 @@ class FilmListPage extends Component {
 
     
                     {this.state.testArray.map(element => {
-                            return<div style={{maxWidth:'70%', display:'inline-block'}} key={element.id}><FilmSection data={element}/></div>
+                            return<div style={{maxWidth:'60%', display:'contents'}} key={element.id}><FilmSection data={element}/></div>
                         })}
                     </div>
               
