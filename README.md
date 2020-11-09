@@ -26,3 +26,4 @@
 8. In the frontend folder run 'npm run start'
   #if they don't run try uninstalling and re-installing node modules.
 
+Application runs on localhost:3000
