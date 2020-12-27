@@ -27,7 +27,7 @@ app.use(cookieParser());
 // app.use(bodyParser());
 
 app.use(logger('dev'));
-app.use(express.json());
+app.use(express.json({extended: false}));
 app.use(express.urlencoded({ extended: false }));
 
 

@@ -5,7 +5,6 @@ import apiCalls from '../../config/api'
 
 import {
     LOAD_FILMS,
-    STOP_LOAD
 } from '../types'
 
 const FilmState = (props)=>{
