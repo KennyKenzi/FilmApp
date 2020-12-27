@@ -8,6 +8,7 @@ import Register from './component/Register'
 import Navbar from './component/Navbar'
 import Film from './component/FilmList/Film'
 import FilmState from './context/films/FilmState'
+import AuthState from './context/auth/AuthState'
 
 
 
@@ -17,7 +18,8 @@ const App = () => {
   return (
    
       <div className="App">
-         <FilmState>
+        <AuthState>
+        <FilmState>
         <Router >
           <header className="App-header">
             <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -42,7 +44,8 @@ const App = () => {
               </div>  
               </div>
           </Router>
-        </FilmState>    
+        </FilmState>  
+        </AuthState>  
         </div>
       
   );

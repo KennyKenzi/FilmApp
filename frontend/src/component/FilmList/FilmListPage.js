@@ -5,12 +5,15 @@ import apiCalls from '../../config/api'
 import PopUp from "./AddFilmPopup"; 
 import access from '../../config/accessToken'
 import FilmContext from '../../context/films/filmContext'
+import AuthContext from '../../context/auth/authContext'
 
 const FilmListPage =()=> {
 
     const filmContext = useContext(FilmContext)
+    const authContext = useContext(AuthContext)
 
-    const {getFilms, films, user, seenPopup, loading} = filmContext
+    const {getFilms, films, seenPopup, loading} = filmContext
+    const {getUser, user} = authContext
 
     // state = { 
 
@@ -25,18 +28,17 @@ const FilmListPage =()=> {
       (async()=>{
             var authtoken = access.getToken()
             if(authtoken){   
-
                     await getFilms(authtoken)
-                    .then(()=>{
-                        apiCalls.getUser(authtoken).then((user)=>{
-                            console.log(user)
-                            if (user.data === 'No User'){    
+                    .then(async()=>{
+                        await getUser(authtoken)
+                        .then(()=>{
+                            if (user === 'No User'){    
                             }else {
-                                console.log('User: ',user.data[0])  
+                                console.log('User: ',user)  
                             }
                         })
+                        
                     })
-
             }else{
                 apiCalls.refresh(authtoken)
                 .then (async(res)=>{
@@ -45,27 +47,18 @@ const FilmListPage =()=> {
                         access.setToken(data.accessToken)
                         authtoken =   access.getToken()
                     }  
-                    //  console.log('authtoken', authtoken, this.state.loading)
-                    console.log('auth: ', authtoken)
 
-                    // apiCalls.getFilms(authtoken)
-                    // .then((data)=>{
-                    //     this.setState({testArray: data.data})
                     await getFilms(authtoken)
-                    .then(async()=>{
-                       await apiCalls.getUser(authtoken).then((user)=>{
-                            console.log(user.data[0])
-                            if (user.data === 'No User'){                                     
-                                console.log('No user again')
-                                console.log(films) 
-                            }else {
-                                console.log('User again: ' , user.data[0])
-                            }
-                        })
-                    })
-
-
-                    // })  
+                    
+                     await getUser(authtoken)
+                    //    .then(()=>{
+                    //        console.log(user)
+                    //         if (user === 'No User'){                                     
+                    //             console.log('No user again')
+                    //         }else {
+                    //             console.log('User again: ', user)
+                    //         }                         
+                    //     })
                 })
             }
         })()
@@ -107,8 +100,8 @@ const FilmListPage =()=> {
                     <div>
 
                          <div style={{marginBottom: 20}}>
-                              <p style={{display:"contents"}}>{user!==""? <>Welcome {user.firstName} {user.lastName}</>: <>Welcome Guest</>}</p> 
-                                 {user!==""? <button type="button" className="btn btn-danger" style={{width: "auto", marginLeft: 20}} onClick={clickLogout}>Logout</button> :""}
+                              <p style={{display:"contents"}}>{user!=="" && user !== "No User"? <>Welcome {user[0].firstName} {user[0].lastName}</>: <>Welcome Guest</>}</p> 
+                                 {user!=="" && user !== "No User" ? <button type="button" className="btn btn-danger" style={{width: "auto", marginLeft: 20}} onClick={clickLogout}>Logout</button> :""}
                                 
                          </div>
 

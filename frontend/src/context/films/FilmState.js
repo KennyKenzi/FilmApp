@@ -20,14 +20,12 @@ const FilmState = (props)=>{
 
     const getFilms = async(authtoken)=>{
         try {
-            console.log(authtoken)
             await apiCalls.getFilms(authtoken)
             .then((res)=>{
                 dispatch({
                     type: LOAD_FILMS,
                     payload: res.data
                 })
-                console.log(res.data)
             })  
         } catch (err) {
             console.log(err)

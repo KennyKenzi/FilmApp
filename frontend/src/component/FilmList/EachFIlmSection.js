@@ -5,8 +5,7 @@ import { Link } from 'react-router-dom';
 
 const FilmSection = props=> {
 
-        console.log(props.data)
-        const {name, description}= props.data
+        const {name, description, releaseDate}= props.data
 
         return ( 
             props.data ? 
@@ -17,8 +16,8 @@ const FilmSection = props=> {
                     
                     <Link to={{pathname:"/viewfilm/" + name, state: props.data}} > <button type="button" className="btn btn-light" >View More</button></Link>  
                     </div>
-                    {/* <h5>{this.props.data.releaseDate.slice(0,10)}</h5> */}
-                <p>{description}</p> 
+                    <h5>{releaseDate.slice(0,10)}</h5> 
+                    <p>{description}</p> 
                 </div>
                 :
                 <div>Test</div> 
