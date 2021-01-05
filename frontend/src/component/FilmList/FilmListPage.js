@@ -12,16 +12,9 @@ const FilmListPage =()=> {
     const filmContext = useContext(FilmContext)
     const authContext = useContext(AuthContext)
 
-    const {getFilms, films, seenPopup, loading} = filmContext
+    const {getFilms, films, seenPopup, loading, togglePop} = filmContext
     const {getUser, user} = authContext
 
-    // state = { 
-
-    //     testArray: [],
-    //     user : "",
-    //     loading: false,
-    //     seenPopup: false
-    // }
 
     useEffect(()=>{
 
@@ -29,36 +22,19 @@ const FilmListPage =()=> {
             var authtoken = access.getToken()
             if(authtoken){   
                     await getFilms(authtoken)
-                    .then(async()=>{
-                        await getUser(authtoken)
-                        .then(()=>{
-                            if (user === 'No User'){    
-                            }else {
-                                console.log('User: ',user)  
-                            }
-                        })
-                        
-                    })
+                    await getUser(authtoken)                      
             }else{
                 apiCalls.refresh(authtoken)
                 .then (async(res)=>{
+
                     var data = res.data
                     if(data.accessToken){  
                         access.setToken(data.accessToken)
-                        authtoken =   access.getToken()
+                        authtoken =   access.getToken()  
                     }  
-
-                    await getFilms(authtoken)
-                    
-                     await getUser(authtoken)
-                    //    .then(()=>{
-                    //        console.log(user)
-                    //         if (user === 'No User'){                                     
-                    //             console.log('No user again')
-                    //         }else {
-                    //             console.log('User again: ', user)
-                    //         }                         
-                    //     })
+                    await getFilms(authtoken)   
+                    await getUser(authtoken)
+                                         
                 })
             }
         })()
@@ -67,14 +43,12 @@ const FilmListPage =()=> {
     },[])
 
 
-    const togglePopup = () => {
-        this.setState({
-            seenPopup: !this.state.seenPopup
-           });
+    const togglePopup = async() => {
+        await togglePop()
     };
 
     const addFilm=()=>{
-         if(user !== ""){
+         if(user !== "" && user !== "No User"){
                 console.log('there is a user logged in')
             togglePopup()
          }else {
@@ -92,13 +66,12 @@ const FilmListPage =()=> {
     }
 
 
-          return (     
+          return (  
+              
             <Fragment> 
-                {
-                    
+                    {
                     loading ?  (<div className="spinner"></div>):
                     <div>
-
                          <div style={{marginBottom: 20}}>
                               <p style={{display:"contents"}}>{user!=="" && user !== "No User"? <>Welcome {user[0].firstName} {user[0].lastName}</>: <>Welcome Guest</>}</p> 
                                  {user!=="" && user !== "No User" ? <button type="button" className="btn btn-danger" style={{width: "auto", marginLeft: 20}} onClick={clickLogout}>Logout</button> :""}
@@ -112,7 +85,7 @@ const FilmListPage =()=> {
                             </h1>
                             <button style={{width: "auto"}} type="button" className="btn btn-primary" onClick={addFilm} >Add Film</button>
                         </div>
-                            {seenPopup ? <PopUp toggle={togglePopup} info={user ?'addfilm':"" } position="middle" /> : null}
+                            {seenPopup ? <PopUp toggle={togglePopup} info={user !== "" && user !== "No User" ?'addfilm':"" } position="middle" /> : null}
 
                         
                            { films.map(element=> (                             

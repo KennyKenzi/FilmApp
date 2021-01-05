@@ -1,98 +1,88 @@
-import React, { Component} from "react";
+import React, { useState, useContext, useEffect} from "react";
 import DatePicker from "react-datepicker";
 import placeholderimage from '../../placeholder-image.png'
 import apiCalls from '../../config/api'
 import data from '../../config/randomData'
+import FilmContext from '../../context/films/filmContext'
 
 import "react-datepicker/dist/react-datepicker.css";
+import { SET_CURRENT_FILM } from "../../context/types";
 
-export default class AddFIlmPopUp extends Component {
+const AddFilmPopUp=(props)=> {
 
-  
-    state={
-        imagedisplayed: placeholderimage,
-        ticket: "",
-        countries: [],
-        genresList: data.genreData()
-    }
+    const filmContext = useContext(FilmContext)
 
-    componentDidMount=async()=>{
-       await apiCalls.getCountries()
-        .then((res)=>{
-            this.setState({countries: res.data})
-        })
-    }
+    const { countries, genresList, getCountryList, current_add, loading, setCurrentFilm, addFilm} = filmContext
 
-    onChange=(e)=>{
+    useEffect(()=>{ 
+        (async()=>{  
+          await getCountryList()
+        })()
+        //eslint-disable-next-line
+    },[])
+   
+    const [newFilm, setNewFilm] = useState({
+        name: '',
+        description: '',
+        ticket: '',
+        date: '',
+        rating: '',
+        genre: '',
+        country: '',
+        imageLabel: '',
+        imagedisplayed: placeholderimage
+    })
+
+    const {name, description, ticket, date, rating, genre, country, imageLabel, imagedisplayed} = newFilm
+
+    const onChange=(e)=>{
         if(e.target.value || e.target.value ===""){
             if(e.target.name === 'rating'){
                 var tag = parseInt(e.target.value)
-                console.log(e.target.value)
-                console.log(tag)
-                if(tag < 1 || tag > 5 || isNaN(e.target.value)){
-                    console.log('t1')
-                    this.setState({ [e.target.name] : ""})
-                }else{
-                    console.log('t2')
-                    this.setState({ [e.target.name] : tag})
 
+                if(tag < 1 || tag > 5 || isNaN(e.target.value)){
+                    setNewFilm({...newFilm, [e.target.name] : ""})
+                }else{
+                    setNewFilm({...newFilm, [e.target.name] : tag})
                 }
             }else{
-                console.log('t3')
-                this.setState({ [e.target.name] : e.target.value}) 
-
+                setNewFilm({...newFilm, [e.target.name] : e.target.value}) 
             }
        }
        if (e.target.files){
         let image = e.target.files[0];
-
-        this.setState({
+        setNewFilm({...newFilm,
             file: image,
             imagedisplayed:URL.createObjectURL(image),
             imageLabel: e.target.value
         }) 
     }
+    setCurrentFilm(newFilm)
     }
 
-    handleDateSelect=(e)=>{
-     this.setState({date: e})
+    const handleDateSelect=(e)=>{
+     setNewFilm({...newFilm, date: e})
     }
 
-    handleClick = () => {
-        this.props.toggle();
+    const handleClick = () => {
+        props.toggle();
     };
 
 
-    onSubmit=async(e)=>{
+    const onSubmit=async(e)=>{
        e.preventDefault()
+        addFilm(current_add)
 
-     const formBody = new FormData()
-      
-        formBody.append('name',this.state.name);
-        formBody.append('description', this.state.description)
-        formBody.append('releaseDate', this.state.date)
-        formBody.append('rating',this.state.rating)
-        formBody.append('ticketPrice',this.state.price)
-        formBody.append('country',this.state.country)
-        formBody.append('genre',this.state.genre)  
-        formBody.append('file',this.state.file)
-      console.log(this.state.file)
-      console.log(formBody)
-
-      await apiCalls.createFilm(formBody,{'Content-Type':'multipart/form-data'})
-      .then(()=>{
-          this.handleClick()
-      }, )
         
-      window.location.reload(false);
+     // window.location.reload(false);
     }
 
 
-    display=()=>{
-      if(this.props.info === "addfilm"){
+ const display=()=>{
+      if(props.info === "addfilm"){
         return(
             <div>
-                <form className="formPost" onSubmit={this.onSubmit} encType="multipart/form-data">
+                <form className="formPost" onSubmit={onSubmit} encType="multipart/form-data">
                     <div className="form-row overflow-auto">
                         <div className="form-group col-md-3">
                         </div>
@@ -100,10 +90,10 @@ export default class AddFIlmPopUp extends Component {
                             <label htmlFor="name">Film Name</label>
                             <input type="text" className="form-control" 
                                 id="name" 
-                                value ={this.state.name} 
+                                value ={name} 
                                 name="name" 
                                 placeholder="Name"
-                                onChange={this.onChange}/>
+                                onChange={onChange}/>
                         </div>
                     </div>
                     <div className="form-row">
@@ -112,9 +102,9 @@ export default class AddFIlmPopUp extends Component {
                             <label htmlFor="description">Description</label>
                             <textarea className="form-control" aria-label="With textarea"
                             id="description"
-                            value={this.state.description}
+                            value={description}
                             name="description"
-                            onChange={this.onChange}></textarea>
+                            onChange={onChange}></textarea>
                         </div>
                     </div>
                     <div className="form-row">
@@ -122,9 +112,9 @@ export default class AddFIlmPopUp extends Component {
                         <div className="form-group col-md-4">
                             <label htmlFor="date">Release Date</label>
                             <DatePicker
-                                selected={this.state.date}
+                                selected={date}
                                // onSelect={this.handleDateSelect} //when day is clicked
-                                onChange={this.handleDateSelect} //only when value has changed
+                                onChange={handleDateSelect} //only when value has changed
 />
                         </div>
                     </div>
@@ -136,17 +126,17 @@ export default class AddFIlmPopUp extends Component {
                             
                             <input type="number" className="form-control" 
                               id="rating"
-                              value={this.state.rating}
+                              value={rating}
                               name="rating"
-                              onChange={this.onChange}/>
+                              onChange={onChange}/>
                         </div>
                         <div className="form-group col-md-5">
                             <label htmlFor="price">Ticket Price</label>
                             <input type="number" className="form-control"
                               id="price"
-                              value={this.state.price}
-                              name="price"
-                              onChange={this.onChange}/>
+                              value={ticket}
+                              name="ticket"
+                              onChange={onChange}/>
                         </div>
                     </div>
 
@@ -155,12 +145,12 @@ export default class AddFIlmPopUp extends Component {
                         <div className="form-group col-md-5">
                             <label htmlFor="genre">Genre</label>
                             <select id="genre" className="form-control"
-                            value={this.state.genre}
+                            value={genre}
                             name="genre"
-                            onChange={this.onChange}>
+                            onChange={onChange}>
                                 <option selected>Choose...</option>
                                 {
-                                  this.state.genresList.map(el=>{
+                                  genresList.map(el=>{
                                   return <option key={el.id}>{el.name}</option>
                                   })
                               }
@@ -169,12 +159,12 @@ export default class AddFIlmPopUp extends Component {
                         <div className="form-group col-md-5">
                         <label htmlFor="country">Country</label>
                         <select id="country" className="form-control"
-                            value={this.state.country}
+                            value={country}
                             name="country"
-                            onChange={this.onChange}>
+                            onChange={onChange}>
                                 <option selected>Choose...</option>
                               {
-                                  this.state.countries.map(el=>{
+                                  countries.map(el=>{
                                   return <option key={el.code}>{el.name}</option>
                                   })
                               }
@@ -186,12 +176,12 @@ export default class AddFIlmPopUp extends Component {
                     <div>  
                         <div className="file-field form-group">
                             <div className="z-depth-1-half mb-4">
-                                <img src={this.state.imagedisplayed} className="img-fluid avatar-pic" alt={placeholderimage}/>
+                                <img src={imagedisplayed} className="img-fluid avatar-pic" alt={placeholderimage}/>
                             </div>
                         <div className="d-flex justify-content-center">
                             <div className="btn btn-mdb-color btn-rounded float-left">
                                 {/* <span>Choose file</span> */}
-                                <input type="file" className="form-control-file"  name="file" value={this.state.imageLabel} onChange={this.onChange}></input>
+                                <input type="file" className="form-control-file"  name="file" value={imageLabel} onChange={onChange}></input>
                             </div>
                         </div>
                         </div>
@@ -217,16 +207,16 @@ export default class AddFIlmPopUp extends Component {
 
 
 
-
-render() {
   return (
    <div className="modal overflow-auto" style={{display: "block"}}>
     {/* <hr/> */}
      <div className="modal_content ">
-     {this.display()} 
-     <div className="close float-none"  onClick={this.handleClick}> <button style={{backgroundColor: "black"}}>&times;</button></div>
+     {/* {console.log('===',loading, countries)} */}
+         {!loading && countries !== null ? display() : ""}
+       
+     <div className="close float-none"  onClick={handleClick}> <button style={{backgroundColor: "black"}}>&times;</button></div>
     </div>
    </div>
   );
- }
 }
+export default AddFilmPopUp
