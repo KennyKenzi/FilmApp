@@ -28,7 +28,7 @@ exports.addFilms=async(req, res, next)=>{
         }
 
         console.log('3===', req.file.filename)
-
+        
         var postBody = { 
           name: req.body.name,
           description: req.body.description,

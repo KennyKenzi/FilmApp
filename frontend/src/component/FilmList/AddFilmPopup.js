@@ -1,26 +1,15 @@
 import React, { useState, useContext, useEffect} from "react";
 import DatePicker from "react-datepicker";
 import placeholderimage from '../../placeholder-image.png'
-import apiCalls from '../../config/api'
-import data from '../../config/randomData'
+//import apiCalls from '../../config/api'
+//import data from '../../config/randomData'
 import FilmContext from '../../context/films/filmContext'
 
 import "react-datepicker/dist/react-datepicker.css";
-import { SET_CURRENT_FILM } from "../../context/types";
 
 const AddFilmPopUp=(props)=> {
 
-    const filmContext = useContext(FilmContext)
 
-    const { countries, genresList, getCountryList, current_add, loading, setCurrentFilm, addFilm} = filmContext
-
-    useEffect(()=>{ 
-        (async()=>{  
-          await getCountryList()
-        })()
-        //eslint-disable-next-line
-    },[])
-   
     const [newFilm, setNewFilm] = useState({
         name: '',
         description: '',
@@ -30,34 +19,50 @@ const AddFilmPopUp=(props)=> {
         genre: '',
         country: '',
         imageLabel: '',
-        imagedisplayed: placeholderimage
+        imagedisplayed: placeholderimage,
+        file: ''
     })
+
+    useEffect(()=>{ 
+        (async()=>{  
+          await getCountryList()
+        })()
+        setCurrentFilm(newFilm)
+        //eslint-disable-next-line
+    },[newFilm])
+
+
+    const filmContext = useContext(FilmContext)
+
+    const { countries, genresList, getCountryList, current_add, loading, setCurrentFilm, addFilm, img, setImage, setLoading} = filmContext
 
     const {name, description, ticket, date, rating, genre, country, imageLabel, imagedisplayed} = newFilm
 
-    const onChange=(e)=>{
+    const onChange= async(e)=>{
         if(e.target.value || e.target.value ===""){
             if(e.target.name === 'rating'){
                 var tag = parseInt(e.target.value)
-
                 if(tag < 1 || tag > 5 || isNaN(e.target.value)){
                     setNewFilm({...newFilm, [e.target.name] : ""})
                 }else{
-                    setNewFilm({...newFilm, [e.target.name] : tag})
+                    setNewFilm({...newFilm, [e.target.name] : e.target.value})
                 }
             }else{
                 setNewFilm({...newFilm, [e.target.name] : e.target.value}) 
             }
        }
-       if (e.target.files){
-        let image = e.target.files[0];
-        setNewFilm({...newFilm,
-            file: image,
-            imagedisplayed:URL.createObjectURL(image),
-            imageLabel: e.target.value
-        }) 
-    }
-    setCurrentFilm(newFilm)
+
+        if (e.target.files){
+
+            setImage(e.target.files[0])
+            let image = e.target.files[0];
+            setNewFilm({...newFilm,
+                file: image,
+                imagedisplayed:URL.createObjectURL(image),
+                imageLabel: e.target.value
+            }) 
+        }  
+        // await setCurrentFilm(newFilm)  
     }
 
     const handleDateSelect=(e)=>{
@@ -70,13 +75,12 @@ const AddFilmPopUp=(props)=> {
 
 
     const onSubmit=async(e)=>{
-       e.preventDefault()
-        addFilm(current_add)
-
-        
-     // window.location.reload(false);
+        e.preventDefault()
+        await addFilm(current_add)    
+        window.location.reload(false);
     }
 
+    
 
  const display=()=>{
       if(props.info === "addfilm"){
@@ -178,13 +182,14 @@ const AddFilmPopUp=(props)=> {
                             <div className="z-depth-1-half mb-4">
                                 <img src={imagedisplayed} className="img-fluid avatar-pic" alt={placeholderimage}/>
                             </div>
-                        <div className="d-flex justify-content-center">
-                            <div className="btn btn-mdb-color btn-rounded float-left">
-                                {/* <span>Choose file</span> */}
-                                <input type="file" className="form-control-file"  name="file" value={imageLabel} onChange={onChange}></input>
+                            <div className="d-flex justify-content-center">
+                                <div className="btn btn-mdb-color btn-rounded float-left">
+                                    {/* <span>Choose file</span> */}
+                                    <input type="file" className="form-control-file"  name="file" value={imageLabel} onChange={onChange}></input>
+                                </div>
                             </div>
                         </div>
-                        </div>
+                 
                     </div>
                     
 
@@ -208,10 +213,11 @@ const AddFilmPopUp=(props)=> {
 
 
   return (
+      
    <div className="modal overflow-auto" style={{display: "block"}}>
     {/* <hr/> */}
      <div className="modal_content ">
-     {/* {console.log('===',loading, countries)} */}
+     {/* {console.log('===',loading, newFilm)} */}
          {!loading && countries !== null ? display() : ""}
        
      <div className="close float-none"  onClick={handleClick}> <button style={{backgroundColor: "black"}}>&times;</button></div>

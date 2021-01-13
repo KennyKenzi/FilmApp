@@ -6,3 +6,6 @@ export const TOGGLE_POPUP = 'TOGGLE_POPUP'
 export const GET_COUNTRIES = 'GET_COUNTRIES'
 export const SET_CURRENT_FILM = 'SET_CURRENT_FILM'
 export const ADD_FILM = 'ADD_FILM'
+export const SET_IMAGE = 'SET_IMAGE'
+export const SET_LOADING = 'SET_LOADING'
+

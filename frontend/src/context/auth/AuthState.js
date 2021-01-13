@@ -7,7 +7,7 @@ import access from '../../config/accessToken'
 import {
     GET_USER,
     REFRESH_TOKEN,
-    LOGOUT_USER,
+   // LOGOUT_USER,
 } from '../types'
 
 const AuthState = (props)=>{

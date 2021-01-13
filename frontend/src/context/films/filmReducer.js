@@ -3,7 +3,9 @@ import {
     TOGGLE_POPUP,
     GET_COUNTRIES,
     SET_CURRENT_FILM,
-    ADD_FILM
+  //  ADD_FILM,
+    SET_IMAGE,
+    SET_LOADING
 } from '../types'
 
 
@@ -33,6 +35,16 @@ export default (state, action)=>{
                 current_add: action.payload,
                 loading: false
             }
+        case SET_LOADING: 
+            return{
+                ...state,
+                loading: action.payload
+            }
+        case SET_IMAGE: 
+        return{
+            ...state,
+            img: action.payload
+        }
 
         default:
             return state     

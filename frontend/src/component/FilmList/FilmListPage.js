@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, Fragment } from 'react';
+import React, { useContext, useEffect, Fragment } from 'react';
 import FilmSection from './EachFIlmSection'
 import apiCalls from '../../config/api'
 
