@@ -87,12 +87,14 @@ const FilmListPage =()=> {
                         </div>
                             {seenPopup ? <PopUp toggle={togglePopup} info={user !== "" && user !== "No User" ?'addfilm':"" } position="middle" /> : null}
 
-                        
-                           { films.map(element=> (                             
-                                    <div key={element.id} style={{maxWidth:'70%', display:'inline-block'}} >
+                        <div style={{maxWidth:'70%', display:'inline-block'}}>
+                                { films.map(element=> (                             
+                                    <div key={element.id}  >
                                         <FilmSection  data={element}/>
                                     </div>)
                             ) }
+                        </div>
+
                             </div>
                 }
                                         

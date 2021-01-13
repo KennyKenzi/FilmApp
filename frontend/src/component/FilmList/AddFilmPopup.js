@@ -31,10 +31,9 @@ const AddFilmPopUp=(props)=> {
         //eslint-disable-next-line
     },[newFilm])
 
-
     const filmContext = useContext(FilmContext)
 
-    const { countries, genresList, getCountryList, current_add, loading, setCurrentFilm, addFilm, img, setImage, setLoading} = filmContext
+    const { countries, genresList, getCountryList, current_add, loading, setCurrentFilm, addFilm} = filmContext
 
     const {name, description, ticket, date, rating, genre, country, imageLabel, imagedisplayed} = newFilm
 
@@ -53,8 +52,6 @@ const AddFilmPopUp=(props)=> {
        }
 
         if (e.target.files){
-
-            setImage(e.target.files[0])
             let image = e.target.files[0];
             setNewFilm({...newFilm,
                 file: image,
@@ -117,7 +114,6 @@ const AddFilmPopUp=(props)=> {
                             <label htmlFor="date">Release Date</label>
                             <DatePicker
                                 selected={date}
-                               // onSelect={this.handleDateSelect} //when day is clicked
                                 onChange={handleDateSelect} //only when value has changed
 />
                         </div>
@@ -184,7 +180,6 @@ const AddFilmPopUp=(props)=> {
                             </div>
                             <div className="d-flex justify-content-center">
                                 <div className="btn btn-mdb-color btn-rounded float-left">
-                                    {/* <span>Choose file</span> */}
                                     <input type="file" className="form-control-file"  name="file" value={imageLabel} onChange={onChange}></input>
                                 </div>
                             </div>
@@ -197,8 +192,6 @@ const AddFilmPopUp=(props)=> {
                     <div style={{display:'inline-block', marginBottom:10}}>
                      <button type="submit" className="btn btn-primary" >Add</button>   
                     </div>
-                    
-                    {/* </div> */}
                 </form>
             </div>
         )
