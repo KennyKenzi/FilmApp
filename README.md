@@ -1,7 +1,6 @@
 # FilmApp
 
-# Personal Notes
-Incomplete/Abandoned Project. 
+## NOTES:  Incomplete/Abandoned Project. 
 Started out one way with regular "use-state", then attempted to implement Contex API/Use Reducer halfway and never finished.
 May attempt to correct in future or just start afresh.
 
